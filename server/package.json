@@ -17,6 +17,7 @@
   "homepage": "https://github.com/Tutoria-Team/Tutoria#readme",
   "description": "",
   "dependencies": {
+    "bootstrap": "^5.3.8",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "pg": "^8.16.3"

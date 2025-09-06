@@ -1,31 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-{/*import UserList from './components/UserList'; // Import the UserList component */}
+import axios from 'axios';
+import React, {useState, useEffect} from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 
 function App() {
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios
+    .get('/users')
+    .then(res => res.data)
+    .then(data => setData(data));
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-
-      {/* <h1>Welcome to Tutoria</h1> */}
-      {/* <UserList /> {/* Show the users */}
-
-    </div>
-  );
-}
+    <div className='container my-5' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+      <table className='table table-striped'>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+          </tr>
+        </thead>
+          <tbody>
+            { data.map(item => (
+              <tr key={item.id}>
+                <td>{item.id}</td>
+                <td>{item.first_name}</td>
+                <td>{item.last_name}</td>
+                <td>{item.email}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table> 
+      </div>
+  )};
 
 export default App;
