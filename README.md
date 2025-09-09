@@ -1,200 +1,132 @@
-# Tutoria
+# Tutoria Project
 
 Hire a Tutor Website
 
-## Tutoria Project - Quick Start
+This project is a **PERN stack application** using Docker:
 
-Start development with Docker, backend, and frontend.
+- **P**ostgreSQL (Docker container)  
+- **E**xpress/Node backend (Docker container)  
+- **R**eact frontend (Docker container)  
+
+Docker allows you to run everything without installing Node, npm, or Postgres locally.  
+
+All containers communicate via the `tutoria_network`.
 
 ---
 
-### **1. Start PostgreSQL Docker Container**
+## Quick Start (Daily Development)
+
+These commands assume containers are already built.
+
+### 1. Start containers
 
 ```bash
 docker start postgres_container
-```
+docker start server_container
+docker start client_container
+````
 
-### **2. Start Backend (Node + Express)**
+### 2. Verify the app
 
-```bash
-cd server
-npm install       # only if dependencies changed
-node index.js
-```
+* Frontend: [http://localhost:3000](http://localhost:3000) — should display the users table
+* Backend API: [http://localhost:9000/users](http://localhost:9000/users) — should return JSON of users
 
-Backend runs at http://localhost:9000
-
-### **3. Start Frontend (React client)**
-
-```bash
-cd client
-npm install       # only if dependencies changed
-npm start
-```
-
-Frontend runs at http://localhost:3000
-
-### **4. Quick DB Check (Optional)**
+### 3. Optional: Check database
 
 ```bash
 docker exec -it postgres_container psql -U admin -d postgres -c "SELECT * FROM users;"
 ```
 
-### **5. Stop Everything (Optional)**
+### 4. Stop containers
 
 ```bash
-# Stop backend and frontend via Ctrl+C
-docker stop postgres_container
+docker stop client_container server_container postgres_container
 ```
 
 ---
 
+## First-Time Setup for New Developers
 
-## **First-Time Setup for New Developers**
+### 1. Install prerequisites
 
-These instructions guide a developer who is setting up the project for the first time on their machine.
+* [Docker Desktop](https://www.docker.com/products/docker-desktop)
+* (Optional) `psql` CLI for manual database inspection
 
----
-
-### **1. Install Prerequisites**
-
-- **Node.js & npm**  
-  Download and install from: [https://nodejs.org](https://nodejs.org)
-
-- **Docker Desktop**  
-  Download and install from: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
-
-- **(Optional) Postgres CLI** if you want to test DB manually:**
-  ```bash
-  sudo apt install postgresql-client    # Linux
-  brew install libpq                     # macOS
-  ```
-
----
-
-### **2. Clone the Project**
+### 2. Clone the project
 
 ```bash
 git clone <your-repo-url>
 cd <project-folder>
 ```
 
----
-
-### **3. Setup PostgreSQL Docker Container**
-
-1. Build and run the Postgres container:
+### 3. Build Docker images
 
 ```bash
+# Backend
+cd server
+docker build -t server:latest .
+
+# Frontend
+cd ../client
+docker build -t client:latest .
+```
+
+### 4. Create and connect containers
+
+```bash
+# Create Docker network
+docker network create tutoria_network
+
+# Run Postgres
 docker run --name postgres_container \
   -e POSTGRES_USER=admin \
-  -e POSTGRES_PASSWORD=yourpassword \
+  -e POSTGRES_PASSWORD=admin_password \
   -e POSTGRES_DB=postgres \
   -p 5432:5432 \
+  --network tutoria_network \
   -d postgres
+
+# Run backend
+docker run --name server_container \
+  -p 9000:9000 \
+  --network tutoria_network \
+  -d server:latest
+
+# Run frontend
+docker run --name client_container \
+  -p 3000:3000 \
+  --network tutoria_network \
+  -d client:latest
 ```
-
-* This creates a Docker container named `postgres_container`.
-* `-p 5432:5432` exposes the database to your local machine.
-* `yourpassword` is the password for the `admin` user (replace with your choice).
-
-2. Verify it’s running:
-
-```bash
-docker ps
-```
-
-* You should see the container with `STATUS: Up`.
 
 ---
 
-### **4. Setup the Database Schema**
+### 5. Configuration files
 
-1. Copy your `setup_users.sql` file into the container or mount it when creating the container.
-2. Run the SQL script to create tables and insert sample data:
-
-```bash
-docker exec -ti postgres_container /bin/bash -c "psql -U admin -d postgres -f /tmp/setup_users.sql"
-```
-
-* You should see `CREATE TABLE` and `INSERT` messages.
-
----
-
-### **5. Backend Setup (Node/Express)**
-
-1. Go to backend folder:
-
-```bash
-cd server
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create `.env` file:
+#### Backend `.env`:
 
 ```env
+PGHOST=postgres_container
 PGUSER=admin
-PGPASSWORD=yourpassword
-PGHOST=127.0.0.1
+PGPASSWORD=admin_password
 PGPORT=5432
 PGDATABASE=postgres
 PORT=9000
 ```
 
-4. Start backend:
-
-```bash
-node index.js
-```
-
-> Server will run at `http://localhost:9000`
-
----
-
-### **6. Frontend Setup (React)**
-
-1. Go to client folder:
-
-```bash
-cd client
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Set proxy in `package.json`:
+#### Frontend `package.json` proxy:
 
 ```json
-"proxy": "http://localhost:9000"
+"proxy": "http://server_container:9000"
 ```
-
-4. Start React app:
-
-```bash
-npm start
-```
-
-> Frontend runs at `http://localhost:3000`
-> Users table should populate from the database.
 
 ---
 
-### **7. Verify Everything Works**
+### 6. Verify everything works
 
-* Open `http://localhost:3000` → Table displays users.
-* Open `http://localhost:9000/users` → JSON response with users.
-
----
-
-### **8. Optional: Test DB from host**
+* Frontend: [http://localhost:3000](http://localhost:3000) — users table should display
+* Backend: [http://localhost:9000/users](http://localhost:9000/users) — JSON response
+* Optional DB check:
 
 ```bash
 docker exec -it postgres_container psql -U admin -d postgres -c "SELECT * FROM users;"
@@ -202,13 +134,88 @@ docker exec -it postgres_container psql -U admin -d postgres -c "SELECT * FROM u
 
 ---
 
-### **9. Shutting Down**
+## Rebuilding Containers After Code Changes
 
-* Stop backend and frontend: `Ctrl + C` in respective terminals
-* Stop Docker container:
+If you modify backend or frontend code, follow these steps:
+
+### 1. Backend changes
 
 ```bash
-docker stop postgres_container
+# Stop and remove old container
+docker stop server_container
+docker rm server_container
+
+# Rebuild backend image
+cd server
+docker build -t server:latest .
+
+# Start new backend container
+docker run --name server_container \
+  -p 9000:9000 \
+  --network tutoria_network \
+  -d server:latest
+```
+
+### 2. Frontend changes
+
+```bash
+# Stop and remove old container
+docker stop client_container
+docker rm client_container
+
+# Rebuild frontend image
+cd client
+docker build -t client:latest .
+
+# Start new frontend container
+docker run --name client_container \
+  -p 3000:3000 \
+  --network tutoria_network \
+  -d client:latest
+```
+
+> The database container (`postgres_container`) remains untouched, so your data is safe.
+
+---
+
+## Daily workflow after first-time setup
+
+```bash
+# Start all containers
+docker start postgres_container server_container client_container
+
+# Stop containers
+docker stop client_container server_container postgres_container
 ```
 
 ---
+
+## Container Architecture
+
+```
+┌─────────────────────┐
+│  client_container   │  → React frontend (port 3000)
+└─────────┬───────────┘
+          │ calls API
+          ▼
+┌─────────────────────┐
+│  server_container   │  → Node/Express backend (port 9000)
+└─────────┬───────────┘
+          │ connects to
+          ▼
+┌─────────────────────┐
+│  postgres_container │  → PostgreSQL database (port 5432)
+└─────────────────────┘
+```
+
+* All containers are on the same network: `tutoria_network`
+* Backend connects to Postgres via container name (`postgres_container`)
+* Frontend connects to backend via container name (`server_container`)
+
+---
+
+## Notes
+
+* Proxy in React is for development only. For production, use full URLs or serve frontend from backend.
+* Using a Docker network ensures all containers can communicate without inspecting IPs.
+* Rebuild containers only when code changes; the database container stays intact.
