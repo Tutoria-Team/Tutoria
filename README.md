@@ -150,10 +150,7 @@ cd server
 docker build -t server:latest .
 
 # Start new backend container
-docker run --name server_container \
-  -p 9000:9000 \
-  --network tutoria_network \
-  -d server:latest
+docker run --name server_container -p 9000:9000 --network tutoria_network -d server:latest
 ```
 
 ### 2. Frontend changes
@@ -168,10 +165,7 @@ cd client
 docker build -t client:latest .
 
 # Start new frontend container
-docker run --name client_container \
-  -p 3000:3000 \
-  --network tutoria_network \
-  -d client:latest
+docker run --name client_container -p 3000:3000 --network tutoria_network -d client:latest
 ```
 
 > The database container (`postgres_container`) remains untouched, so your data is safe.
