@@ -64,11 +64,11 @@ These instructions guide a developer who is setting up the project for the first
 - **Docker Desktop**  
   Download and install from: [https://www.docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop)
 
-- **(Optional) Postgres CLI** if you want to test DB manually:
+- **(Optional) Postgres CLI** if you want to test DB manually:**
   ```bash
   sudo apt install postgresql-client    # Linux
   brew install libpq                     # macOS
-````
+  ```
 
 ---
 
