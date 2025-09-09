@@ -9,15 +9,15 @@ const PORT = process.env.PORT || 9000;
 app.use(express.json()); 
 
 //Functions
-const getUsers =  (req, res) => {
-  pool.query('SELECT * FROM users', (error, users) => {
-    if (error) {
-      console.error('Error executing query', error.stack);
-      return res.status(500).json({ error: 'Internal Server Error' });
-    }
-    res.status(200).json(users.rows)
-  })
-}
+const getUsers = async (req, res) => {
+  try {
+    const result = await pool.query('SELECT * FROM users');
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Database query failed:', error);
+    res.status(500).json({ error: error.message });
+  }
+};
 
 //Here you can add your routes
 //Here's an example
