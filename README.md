@@ -150,7 +150,7 @@ cd server
 docker build -t server:latest .
 
 # Start new backend container
-docker run --name server_container -p 9000:9000 --network tutoria_network -d server:latest
+docker run --name server_container -p 9000:9000 -d server:latest
 ```
 
 ### 2. Frontend changes
@@ -165,11 +165,19 @@ cd client
 docker build -t client:latest .
 
 # Start new frontend container
-docker run --name client_container -p 3000:3000 --network tutoria_network -d client:latest
+docker run --name client_container -p 3000:3000 -d client:latest
 ```
 
 > The database container (`postgres_container`) remains untouched, so your data is safe.
 
+### 3. Network - make sure all three containers are in the same network
+
+```bash
+docker network create tutoria_network
+docker network connect tutoria_network server_container
+docker network connect tutoria_network client_container
+docker network connect tutoria_network postgres_container
+```
 ---
 
 ## Daily workflow after first-time setup
