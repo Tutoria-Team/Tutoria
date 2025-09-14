@@ -9,6 +9,11 @@ const crypto = require('crypto');
 const app = express();
 app.use(express.json());
 
+// Sanity Check
+app.get('/api/test', (req, res) => {
+  res.send('API is working!');
+});
+
 // Helper function to send OTP
 const sendOtp = async (email, mobile_number, otp) => {
     const transporter = nodemailer.createTransport({
