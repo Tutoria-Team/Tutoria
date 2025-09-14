@@ -1,9 +1,9 @@
 import './App.css';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
-import Signup from './Signup';
-import OtpVerification from './OtpVerification';
-import Login from './Login';
+import Signup from './components/Signup';
+import OtpVerification from './components/OtpVerification';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
