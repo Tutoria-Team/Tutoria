@@ -1,43 +1,29 @@
 import './App.css';
 import axios from 'axios';
 import React, {useState, useEffect} from 'react';
+import Signup from './components/Signup';
+import OtpVerification from './components/OtpVerification';
+import Login from './components/Login';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-
-function App() {
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    axios
-    .get('/users')
-    .then(res => res.data)
-    .then(data => setData(data));
-  }, []);
+const App = () => {
+  const [view, setView] = useState('signup'); // control which component shows
 
   return (
-    <div className='container my-5' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <table className='table table-striped'>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-          </tr>
-        </thead>
-          <tbody>
-            { data.map(item => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.first_name}</td>
-                <td>{item.last_name}</td>
-                <td>{item.email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table> 
-      </div>
-  )};
+    <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
+      <h1>PERN Auth</h1>
+
+      <nav style={{ marginBottom: 20 }}>
+        <button onClick={() => setView('signup')}>Sign Up</button>{' '}
+        <button onClick={() => setView('otp')}>Verify OTP</button>{' '}
+        <button onClick={() => setView('login')}>Login</button>
+      </nav>
+
+      {view === 'signup' && <Signup />}
+      {view === 'otp' && <OtpVerification />}
+      {view === 'login' && <Login />}
+    </div>
+  );
+};
 
 export default App;
