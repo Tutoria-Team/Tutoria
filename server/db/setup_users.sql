@@ -6,15 +6,17 @@ DROP TABLE IF EXISTS users;
 
 -- Create users table
 CREATE TABLE users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE,
+    mobile_number VARCHAR(15) UNIQUE,
+    hashed_password VARCHAR(255) NOT NULL,
+    otp VARCHAR(6),
+    otp_expiry TIMESTAMPTZ,
     courses_taught INTEGER DEFAULT 0,
-    profile_photo_url TEXT,
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    profile_photo_url TEXT DEFAULT 'https://example.com/photos/alice.jpg',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insert sample users (password_hash here is placeholder text - replace with real hashes)
