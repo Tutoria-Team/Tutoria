@@ -21,8 +21,7 @@ function App() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
+            <th>Name</th>
             <th>Email</th>
           </tr>
         </thead>
@@ -30,8 +29,7 @@ function App() {
             { data.map(item => (
               <tr key={item.id}>
                 <td>{item.id}</td>
-                <td>{item.first_name}</td>
-                <td>{item.last_name}</td>
+                <td>{item.name}</td>
                 <td>{item.email}</td>
               </tr>
             ))}
