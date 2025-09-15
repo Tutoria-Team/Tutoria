@@ -27,7 +27,7 @@ This will:
 
 * Build images (if not already built)
 * Start all containers
-* Attach them to a shared network (`tutoria_default`)
+* Attach them to a shared network (`tutoria_network`)
 
 ### 2. Verify the App
 
@@ -69,31 +69,6 @@ docker-compose up --build -d
 ```
 
 The `--build` flag ensures code changes are reflected the first time.
-
----
-
-## ⚙️ Configuration
-
-### 1. Backend Environment (`server/.env`)
-
-```env
-PGHOST=postgres
-PGUSER=admin
-PGPASSWORD=admin_password
-PGPORT=5432
-PGDATABASE=postgres
-PORT=9000
-```
-
-> The hostname `postgres` matches the service name in `docker-compose.yml`.
-
-### 2. Frontend Proxy (`client/package.json`)
-
-```json
-"proxy": "http://server:9000"
-```
-
-> This allows the frontend to call the backend without CORS issues.
 
 ---
 
