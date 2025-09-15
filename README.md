@@ -1,112 +1,83 @@
-# Tutoria Project
+# 📚 Tutoria — Hire a Tutor Platform
 
-Hire a Tutor Website
+A full-stack **PERN** (PostgreSQL, Express, React, Node.js) application containerized with **Docker** and managed via **Docker Compose**.
 
-This project is a **PERN stack application** using Docker:
-
-- **P**ostgreSQL (Docker container)  
-- **E**xpress/Node backend (Docker container)  
-- **R**eact frontend (Docker container)  
-
-Docker allows you to run everything without installing Node, npm, or Postgres locally.  
-
-All containers communicate via the `tutoria_network`.
+> No need to install Node, npm, or PostgreSQL locally — everything runs in containers.
 
 ---
 
-## Quick Start (Daily Development)
+## 🚀 Project Overview
 
-These commands assume containers are already built.
+- **Frontend:** React (port `3000`)
+- **Backend:** Node + Express API (port `9000`)
+- **Database:** PostgreSQL (port `5432`)
+- **Docker:** Managed via `docker-compose`
 
-### 1. Start containers
+---
+
+## ⚡ Quick Start (Daily Development)
+
+### 1. Start All Services
 
 ```bash
-docker start postgres_container
-docker start server_container
-docker start client_container
+docker-compose up -d
 ````
 
-### 2. Verify the app
+This will:
 
-* Frontend: [http://localhost:3000](http://localhost:3000) — should display the users table
-* Backend API: [http://localhost:9000/users](http://localhost:9000/users) — should return JSON of users
+* Build images (if not already built)
+* Start all containers
+* Attach them to a shared network (`tutoria_default`)
 
-### 3. Optional: Check database
+### 2. Verify the App
+
+* Frontend: [http://localhost:3000](http://localhost:3000)
+* Backend API: [http://localhost:9000/users](http://localhost:9000/users)
+
+### 3. Stop All Services
 
 ```bash
-docker exec -it postgres_container psql -U admin -d postgres -c "SELECT * FROM users;"
+docker-compose down
 ```
 
-### 4. Stop containers
+Add `-v` to remove volumes (and database data):
 
 ```bash
-docker stop client_container server_container postgres_container
+docker-compose down -v
 ```
 
 ---
 
-## First-Time Setup for New Developers
+## 🧰 First-Time Setup (New Developers)
 
-### 1. Install prerequisites
+### 1. Install Prerequisites
 
 * [Docker Desktop](https://www.docker.com/products/docker-desktop)
 * (Optional) `psql` CLI for manual database inspection
 
-### 2. Clone the project
+### 2. Clone the Repository
 
 ```bash
 git clone <your-repo-url>
 cd <project-folder>
 ```
 
-### 3. Build Docker images
+### 3. Start the App
 
 ```bash
-# Backend
-cd server
-docker build -t server:latest .
-
-# Frontend
-cd ../client
-docker build -t client:latest .
+docker-compose up --build -d
 ```
 
-### 4. Create and connect containers
-
-```bash
-# Create Docker network
-docker network create tutoria_network
-
-# Run Postgres
-docker run --name postgres_container \
-  -e POSTGRES_USER=admin \
-  -e POSTGRES_PASSWORD=admin_password \
-  -e POSTGRES_DB=postgres \
-  -p 5432:5432 \
-  --network tutoria_network \
-  -d postgres
-
-# Run backend
-docker run --name server_container \
-  -p 9000:9000 \
-  --network tutoria_network \
-  -d server:latest
-
-# Run frontend
-docker run --name client_container \
-  -p 3000:3000 \
-  --network tutoria_network \
-  -d client:latest
-```
+The `--build` flag ensures code changes are reflected the first time.
 
 ---
 
-### 5. Configuration files
+## ⚙️ Configuration
 
-#### Backend `.env`:
+### 1. Backend Environment (`server/.env`)
 
 ```env
-PGHOST=postgres_container
+PGHOST=postgres
 PGUSER=admin
 PGPASSWORD=admin_password
 PGPORT=5432
@@ -114,110 +85,62 @@ PGDATABASE=postgres
 PORT=9000
 ```
 
-#### Frontend `package.json` proxy:
+> The hostname `postgres` matches the service name in `docker-compose.yml`.
+
+### 2. Frontend Proxy (`client/package.json`)
 
 ```json
-"proxy": "http://server_container:9000"
+"proxy": "http://server:9000"
+```
+
+> This allows the frontend to call the backend without CORS issues.
+
+---
+
+## 🔁 Rebuilding After Code Changes
+
+If you modify **backend** or **frontend** code:
+
+```bash
+docker-compose up --build -d
+```
+
+This rebuilds only the changed services and restarts them.
+
+---
+
+## 🧑‍💻 Useful Commands
+
+### View Logs
+
+```bash
+docker-compose logs -f
+```
+
+### Access the Database
+
+```bash
+docker-compose exec postgres psql -U admin -d postgres
+```
+
+Run a one-off query:
+
+```bash
+docker-compose exec postgres psql -U admin -d postgres -c "SELECT * FROM users;"
 ```
 
 ---
 
-### 6. Verify everything works
+## 🧱 Architecture Overview
 
-* Frontend: [http://localhost:3000](http://localhost:3000) — users table should display
-* Backend: [http://localhost:9000/users](http://localhost:9000/users) — JSON response
-* Optional DB check:
+```text
+┌──────────────┐     ┌──────────────┐     ┌────────────────┐
+│  React App   │ --> │  Express API │ --> │  PostgreSQL DB │
+│ (client)     │     │ (server)     │     │ (postgres)     │
+└──────────────┘     └──────────────┘     └────────────────┘
+       |                  |                     |
+       ▼                  ▼                     ▼
+   http://localhost:3000  http://localhost:9000 Port 5432
 
-```bash
-docker exec -it postgres_container psql -U admin -d postgres -c "SELECT * FROM users;"
+All services run on a shared Docker network.
 ```
-
----
-
-## Rebuilding Containers After Code Changes
-
-If you modify backend or frontend code, follow these steps:
-
-### 1. Backend changes
-
-```bash
-# Stop and remove old container
-docker stop server_container
-docker rm server_container
-
-# Rebuild backend image
-cd server
-docker build -t server:latest .
-
-# Start new backend container
-docker run --name server_container -p 9000:9000 -d server:latest
-```
-
-### 2. Frontend changes
-
-```bash
-# Stop and remove old container
-docker stop client_container
-docker rm client_container
-
-# Rebuild frontend image
-cd client
-docker build -t client:latest .
-
-# Start new frontend container
-docker run --name client_container -p 3000:3000 -d client:latest
-```
-
-> The database container (`postgres_container`) remains untouched, so your data is safe.
-
-### 3. Network - make sure all three containers are in the same network
-
-```bash
-docker network create tutoria_network
-docker network connect tutoria_network server_container
-docker network connect tutoria_network client_container
-docker network connect tutoria_network postgres_container
-```
----
-
-## Daily workflow after first-time setup
-
-```bash
-# Start all containers
-docker start postgres_container server_container client_container
-
-# Stop containers
-docker stop client_container server_container postgres_container
-```
-
----
-
-## Container Architecture
-
-```
-┌─────────────────────┐
-│  client_container   │  → React frontend (port 3000)
-└─────────┬───────────┘
-          │ calls API
-          ▼
-┌─────────────────────┐
-│  server_container   │  → Node/Express backend (port 9000)
-└─────────┬───────────┘
-          │ connects to
-          ▼
-┌─────────────────────┐
-│  postgres_container │  → PostgreSQL database (port 5432)
-└─────────────────────┘
-```
-
-* All containers are on the same network: `tutoria_network`
-* Backend connects to Postgres via container name (`postgres_container`)
-* Frontend connects to backend via container name (`server_container`)
-
----
-
-## Notes
-
-* Proxy in React is for development only. For production, use full URLs or serve frontend from backend.
-* Using a Docker network ensures all containers can communicate without inspecting IPs.
-* Rebuild containers only when code changes; the database container stays intact.

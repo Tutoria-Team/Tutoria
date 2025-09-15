@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    container_name: server_container
+    ports:
+      - "9000:9000"
+    networks:
+      - tutoria_network
+
+  client:
+    build:
+      context: ./client
+    container_name: client_container
+    ports:
+      - "3000:3000"
+    networks:
+      - tutoria_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin_password
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - tutoria_network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./server/db:/docker-entrypoint-initdb.d
+
+networks:
+  tutoria_network:
+
+volumes:
+  pgdata:
