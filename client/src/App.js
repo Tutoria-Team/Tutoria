@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const App = () => {
 
   return (
-    
     <div>
       <Header />
       <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>

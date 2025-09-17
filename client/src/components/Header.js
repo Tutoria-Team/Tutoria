@@ -11,12 +11,16 @@ const Header = () => {
     }
 
     return (
-        
-        <div class="header">
-            <a href="#default" class="logo">Tutoria</a>
-            <div class="header-right">
+
+        <div className="header">
+            <a href="#default" className="logo">Tutoria</a>
+            <div className="header-right">
                 <button onClick={handleAccountPopupToggle}>Login</button>
             </div>
+
+            <h1 style={{ fontFamily: "'Gowun Batang', serif" }}>
+              Test font
+            </h1>
         </div>
     );
 };
