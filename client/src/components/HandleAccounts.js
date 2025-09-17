@@ -8,12 +8,7 @@ const HandleAccounts = () => {
     const [view, setView] = useState('signup'); // control which component shows
 
     return (
-        <div class="header">
-            <a href="#default" class="logo">Tutoria</a>
-            <div class="header-right">
-                <a class="login">Login</a>
-            </div>
-
+        <div>
             <h1>PERN Auth</h1>
 
             <nav style={{ marginBottom: 20 }}>

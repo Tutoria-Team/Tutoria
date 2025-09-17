@@ -17,10 +17,6 @@ const Header = () => {
             <div className="header-right">
                 <button onClick={handleAccountPopupToggle}>Login</button>
             </div>
-
-            <h1 style={{ fontFamily: "'Gowun Batang', serif" }}>
-              Test font
-            </h1>
         </div>
     );
 };
