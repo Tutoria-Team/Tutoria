@@ -1,46 +1,72 @@
-/* Style the header with a grey background and some padding */
 .header {
   overflow: hidden;
   background-color: #f1f1f1;
-  padding: 20px 10px;
 }
 
-/* Style the header links */
 .header a {
   float: left;
+  display: block;
   color: black;
   text-align: center;
-  padding: 12px;
+  padding: 14px 16px;
   text-decoration: none;
-  font-size: 18px;
-  line-height: 25px;
-  border-radius: 4px;
+  font-size: 17px;
 }
 
-/* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
-.header a.logo {
+.header a.logoName {
   font-size: 25px;
   font-weight: bold;
+  text-decoration: none;
+  padding-left: 0;
+  color: #887628;
 }
 
-/* Change the background color on mouse-over */
-.header a:hover {
+.header a.headerItem {
+  font-size: 20px;
+  text-decoration: none;
+  padding: 18px 16px;
+}
+
+.header a.headerItem:hover {
   background-color: #ddd;
-  color: black;
 }
 
-/* Style the active/current link*/
 .header a.active {
-  background-color: dodgerblue;
   color: white;
 }
 
-/* Float the link section to the right */
-.header-right {
+.header .header-left {
+  float: left;
+}
+
+.header .header-right {
   float: right;
 }
 
-/* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+.header .header-right button {
+  float: right;
+  padding: 6px;
+  margin-top: 16px;
+  margin-right: 16px;
+  background: #ddd;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+}
+
+.header .header-right button:hover {
+  background: #ccc;
+}
+
+.logo {
+  padding-right: 5;
+}
+
+.logoImage {
+  height: 40px;
+  width: auto;
+}
+
 @media screen and (max-width: 500px) {
   .header a {
     float: none;

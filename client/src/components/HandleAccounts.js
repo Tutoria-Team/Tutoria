@@ -5,7 +5,7 @@ import OtpVerification from './OtpVerification';
 import Login from './Login';
 
 const HandleAccounts = () => {
-    const [view, setView] = useState('signup'); // control which component shows
+    const [view, setView] = useState('signup'); 
 
     return (
         <div>
