@@ -1,13 +1,14 @@
 import '../styles/header.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-//import Accounts from './HandleAccounts';
+import HandleAccounts from './HandleAccounts';
 
-const Header = ({
-    setShowLogin,
-    setShowSignUp
-}) => {        
+const Header = () => { 
+    const [showLogin, setShowLogin] = useState(false);
+    const [showSignUp, setShowSignUp] = useState(false);    
+
     return (
+        <>
         <div className="header">
             <div className="header-left">
                 <a href="#default" className="logo">
@@ -22,6 +23,14 @@ const Header = ({
                 <button onClick={() => setShowSignUp(true)} title="Sign Up">Sign Up</button>
             </div>
         </div>
+
+        {showLogin && (
+                <HandleAccounts
+                    setShowLogin={setShowLogin}
+                    setShowSignUp={setShowSignUp}
+                />
+            )}
+        </>
     );
 };
 

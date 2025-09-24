@@ -1,15 +1,23 @@
+import '../styles/login.css';
 import React, { useState } from 'react';
 import axios from 'axios';
 import Signup from './Signup';
 import OtpVerification from './OtpVerification';
 import Login from './Login';
 
-const HandleAccounts = () => {
+const HandleAccounts = ({
+        setShowLogin,
+        setShowSignUp
+    }) => {
     const [view, setView] = useState('signup'); 
 
     return (
-        <div>
-            <h1>PERN Auth</h1>
+        <div className="login-popup">
+            <div className="login-popup-header">
+                <button className="exit-button" onClick={() => setShowLogin(false)}>X</button>
+            </div>
+
+            <h1>Welcome Back</h1>
 
             <nav style={{ marginBottom: 20 }}>
             <button onClick={() => setView('signup')}>Sign Up</button>{' '}
@@ -24,4 +32,4 @@ const HandleAccounts = () => {
     );
 };
 
-export default Account;
+export default HandleAccounts;

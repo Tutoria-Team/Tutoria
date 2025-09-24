@@ -28,6 +28,14 @@
   color: #61dafb;
 }
 
+.exit-button {
+  position: absolute;
+}
+
+.exit-button:hover{
+  background-color: #bbb;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +44,4 @@
     transform: rotate(360deg);
   }
 }
+
