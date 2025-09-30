@@ -1,0 +1,61 @@
+.auth-popup {
+	position: relative;
+	top: 30%;
+	left: 30%;
+	width: 40%;
+	height: 300px;
+	background-color: white;
+	border: 2px solid #ccc;
+	border-radius: 10px;
+	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+	z-index: 1000;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+/* Optional close button style */
+.close-btn {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	background: none;
+	border: none;
+	font-size: 24px;
+	color: #888;
+	cursor: pointer;
+	transition: color 0.3s ease;
+	z-index: 1010; 
+}
+
+.close-btn:hover {
+	color: #333;
+}
+
+/* Body wrapper for left and right */
+.auth-popup-body {
+	display: flex;
+	flex: 1;
+	height: 100%;
+}
+
+/* Left panel */
+.auth-left {
+	width: 40%;
+	background-color: #f5f5f5;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 1rem;
+	overflow: hidden;
+}
+
+/* Right panel */
+.auth-right {
+	padding: 2rem;
+	width: 60%;
+	background-color: white;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}

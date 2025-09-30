@@ -1,11 +1,10 @@
 import '../styles/header.css';
 import React, { useState } from 'react';
 import axios from 'axios';
-import HandleAccounts from './HandleAccounts';
+import Authentication from './Authentication';
 
 const Header = () => { 
-    const [showLogin, setShowLogin] = useState(false);
-    const [showSignUp, setShowSignUp] = useState(false);    
+    const [showAuth, setShowAuth] = useState(false);
 
     return (
         <>
@@ -19,15 +18,13 @@ const Header = () => {
                 <a href="#default" className="headerItem">Become a Tutor</a>
             </div>
             <div className="header-right">
-                <button onClick={() => setShowLogin(true)} title="Login">Login</button>
-                <button onClick={() => setShowSignUp(true)} title="Sign Up">Sign Up</button>
+                <button onClick={() => setShowAuth(true)} title="auth">Login</button>
             </div>
         </div>
 
-        {showLogin && (
-                <HandleAccounts
-                    setShowLogin={setShowLogin}
-                    setShowSignUp={setShowSignUp}
+        {showAuth && (
+                <Authentication
+                    setShowAuth={setShowAuth}
                 />
             )}
         </>
