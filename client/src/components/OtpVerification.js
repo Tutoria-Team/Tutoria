@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-const OtpVerification = () => {
-    const [email, setEmail] = useState('');
-    const [mobile_number, setMobileNumber] = useState('');
+const OtpVerification = ({ email: initialEmail = '', mobile_number: initialMobile = '' }) => {
+    const [email, setEmail] = useState(initialEmail);
+    const [mobile_number, setMobileNumber] = useState(initialMobile);
     const [otp, setOtp] = useState('');
 
     const handleSubmit = async (e) => {
@@ -17,7 +17,7 @@ const OtpVerification = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
             <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} />
             <input type="text" placeholder="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} required />

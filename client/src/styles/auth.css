@@ -1,9 +1,10 @@
 .auth-popup {
-	position: relative;
-	top: 30%;
-	left: 30%;
-	width: 40%;
-	height: 300px;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 600px;
+	height: 500px;
 	background-color: white;
 	border: 2px solid #ccc;
 	border-radius: 10px;
@@ -11,10 +12,17 @@
 	z-index: 1000;
 	display: flex;
 	flex-direction: column;
-	overflow: hidden;
+	overflow: auto;
+	box-sizing: border-box;
 }
 
-/* Optional close button style */
+@media (max-width: 600px) {
+	.auth-popup {
+		width: 95%;
+		height: 90vh;
+	}
+}
+
 .close-btn {
 	position: absolute;
 	top: 10px;
@@ -32,14 +40,12 @@
 	color: #333;
 }
 
-/* Body wrapper for left and right */
 .auth-popup-body {
 	display: flex;
 	flex: 1;
 	height: 100%;
 }
 
-/* Left panel */
 .auth-left {
 	width: 40%;
 	background-color: #f5f5f5;
@@ -50,12 +56,78 @@
 	overflow: hidden;
 }
 
-/* Right panel */
 .auth-right {
-	padding: 2rem;
+	padding: 0;
 	width: 60%;
 	background-color: white;
 	overflow-y: auto;
 	display: flex;
 	flex-direction: column;
+}
+
+.auth-form {
+	display: flex;
+    flex-direction: column;
+    width: 300px;
+    margin: 80px auto;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f9f9f9;
+}
+
+.login-form {
+    margin-top: 120px;
+}
+
+.auth-form input {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    margin-bottom: 20px;
+    padding: 10px 5px;
+    font-size: 16px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.auth-form input:focus {
+    border-bottom-color: #007bff;
+}
+
+.auth-form button {
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-form button:hover {
+    background-color: #0056b3;
+}
+
+.auth-footer {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+.link-text {
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.link-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0;
+    margin-bottom: 10px;
 }

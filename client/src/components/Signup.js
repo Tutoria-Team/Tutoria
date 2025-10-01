@@ -12,13 +12,16 @@ const Signup = () => {
         try {
             await axios.post('/api/signup', { name, email, mobile_number, password });
             alert('Signup successful! Check your email for the OTP.');
+            // if (onSuccess) {
+            //     onSuccess({ email, mobile_number }); 
+            // }
         } catch (error) {
             alert('Error during signup');
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} className="auth-form">
             <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} required />

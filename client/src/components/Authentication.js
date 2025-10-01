@@ -8,8 +8,14 @@ import Login from './Login';
 const Authentication = ({
         setShowAuth
     }) => {
-    const [view, setView] = useState('signup'); 
+    const [view, setView] = useState('login'); 
+    const [signupData, setSignupData] = useState({});
 
+    const handleSignupSuccess = (data) => {
+        setSignupData(data);
+        setView('otp');
+    };
+    
     return (
         <div className="auth-popup">
             <div className="auth-popup-body">
@@ -20,15 +26,26 @@ const Authentication = ({
 
                     <button className="close-btn" onClick={() => setShowAuth(false)}>X</button>
 
-                    <nav style={{ marginBottom: 20 }}>
-                        <button onClick={() => setView('signup')}>Sign Up</button>{' '}
-                        <button onClick={() => setView('otp')}>Verify OTP</button>{' '}
-                        <button onClick={() => setView('login')}>Login</button>
-                    </nav>
+                    {view === 'login' && (
+                        <>
+                            <Login />
+                            <div className="auth-footer">
+                                <button className="link-btn">Forgot password?</button>
+                                <p>Don't have an account? <span className="link-text" onClick={() => setView('signup')}>Sign up</span></p>
+                            </div>
+                        </>
+                    )}
 
-                    {view === 'signup' && <Signup />}
-                    {view === 'otp' && <OtpVerification />}
-                    {view === 'login' && <Login />}
+                    {view === 'signup' && (
+                        <>
+                            <Signup onSuccess={handleSignupSuccess} />
+                            <div className="auth-footer">
+                                <p>Already have an account? <span className="link-text" onClick={() => setView('login')}>Login</span></p>
+                            </div>
+                        </>
+                    )}
+
+                    {view === 'otp' && <OtpVerification email={signupData.email} mobile_number={signupData.mobile_number} />}
                 </div>
             </div>
         </div>
