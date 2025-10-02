@@ -41,7 +41,7 @@
 }
 
 .auth-popup-body {
-	display: flex
+	display: flex;
 	flex: 1;
 	height: 100%;
 }
