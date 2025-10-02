@@ -20,7 +20,7 @@ const Authentication = ({
         <div className="auth-popup">
             <div className="auth-popup-body">
                 <div className="auth-left">
-                    <h1>Welcome Back</h1>
+                    <h1>Welcome Back!</h1>
                 </div>
                 <div className="auth-right">
 
