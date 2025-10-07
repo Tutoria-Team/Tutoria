@@ -38,13 +38,9 @@ const Header = ({ user, setUser }) => {
                                     Logout
                                 </button>
                             ) : (
-                                <button title="Profile" onClick={() => window.location.href = '/profile'}>
-                                    <img
-                                        src={user.profile_photo_url || '/Icons/Default_Profile_Picture.png'}
-                                        alt="Profile"
-                                        className="profileButton"
-                                    />
-                                </button>
+                                <a href="/profile" className="defaultPicture">
+                                    <img className="DefaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture"/>
+                                </a>
                             )}
                         </>
                     )}
