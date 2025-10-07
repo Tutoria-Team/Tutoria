@@ -23,8 +23,12 @@ const Header = ({ user, setUser }) => {
                         <button onClick={() => setShowAuth(true)} title="auth">Login</button>
                     ) : (
                         <>
-                            <button title="Messages" onClick={() => window.location.href = '/messages'}>📩</button>
-                            <button title="Notifications" onClick={() => window.location.href = '/notifications'}>🔔</button>
+                            <a href="/messages" className="messages">
+                                <img className="messagesIcon" src="/Icons/Messages.png" alt="Messages"/>
+                            </a>
+                            <a href="/notifications" className="notifications">
+                                <img className="notificationsIcon" src="/Icons/Notifications.png" alt="Notifications"/>
+                            </a>
                             {window.location.pathname === '/profile' ? (
                                 <button title="Logout" onClick={() => {
                                     localStorage.removeItem('token');
@@ -36,7 +40,7 @@ const Header = ({ user, setUser }) => {
                             ) : (
                                 <button title="Profile" onClick={() => window.location.href = '/profile'}>
                                     <img
-                                        src={user.profile_photo_url || '/LogoVersions/Logo.png'}
+                                        src={user.profile_photo_url || '/Icons/Default_Profile_Picture.png'}
                                         alt="Profile"
                                         className="profileButton"
                                     />
