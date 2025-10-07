@@ -5,9 +5,7 @@ import Signup from './Signup';
 import OtpVerification from './OtpVerification';
 import Login from './Login';
 
-const Authentication = ({
-        setShowAuth
-    }) => {
+const Authentication = ({ setShowAuth, setUser }) => {
     const [view, setView] = useState('login'); 
     const [signupData, setSignupData] = useState({});
 
@@ -28,7 +26,7 @@ const Authentication = ({
 
                     {view === 'login' && (
                         <>
-                            <Login />
+                            <Login setUser={setUser} setShowAuth={setShowAuth} />
                             <div className="auth-footer">
                                 <button className="link-btn">Forgot password?</button>
                                 <p>Don't have an account? <span className="link-text" onClick={() => setView('signup')}>Sign up</span></p>

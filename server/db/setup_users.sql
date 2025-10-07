@@ -14,7 +14,7 @@ CREATE TABLE users (
     otp VARCHAR(6),
     otp_expiry TIMESTAMPTZ,
     courses_taught INTEGER DEFAULT 0,
-    profile_photo_url TEXT DEFAULT 'https://example.com/photos/alice.jpg',
+    profile_photo_url TEXT DEFAULT '/LogoVersions/Logo.png',
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );

@@ -106,7 +106,15 @@ app.post('/api/login', async (req, res) => {
         }
 
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.send({ token });
+        res.send({
+          token,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            profile_photo_url: user.profile_photo_url
+          }
+        });
     } catch (error) {
         res.status(500).send({ error: 'Error during login' });
     }

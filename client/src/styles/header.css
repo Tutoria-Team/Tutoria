@@ -67,6 +67,17 @@
   width: auto;
 }
 
+.profileButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+}
+
 @media screen and (max-width: 500px) {
   .header a {
     float: none;
