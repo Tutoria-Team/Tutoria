@@ -5,10 +5,11 @@ import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
+  const [user, setUser] = useState(null);
 
   return (
     <div>
-      <Header />
+      <Header user={user} setUser={setUser} />
       <div style={{ maxWidth: 400, margin: 'auto', padding: 20 }}>
         
       </div>
