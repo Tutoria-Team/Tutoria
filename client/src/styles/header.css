@@ -58,6 +58,15 @@
   background: #ccc;
 }
 
+.header-right a {
+  padding: 6px;
+  margin-top: 10px;
+  margin-right: 16px;
+  border: none;
+  cursor: pointer;
+  background-color: none;
+}
+
 .logo {
   padding-right: 5;
 }
@@ -67,9 +76,9 @@
   width: auto;
 }
 
-.defaultPicture {
-  width: 32px;
-  height: 32px;
+.defaultPictureIcon {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   object-fit: cover;
 }

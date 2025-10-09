@@ -39,7 +39,7 @@ const Header = ({ user, setUser }) => {
                                 </button>
                             ) : (
                                 <a href="/profile" className="defaultPicture">
-                                    <img className="DefaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture"/>
+                                    <img className="defaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture"/>
                                 </a>
                             )}
                         </>
