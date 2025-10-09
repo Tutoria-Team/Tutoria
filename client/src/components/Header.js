@@ -1,21 +1,29 @@
 import '../styles/header.css';
 import React, { useState } from 'react';
-import axios from 'axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Authentication from './Authentication';
 
 const Header = ({ user, setUser }) => {
     const [showAuth, setShowAuth] = useState(false);
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        setUser(null);
+        navigate('/'); 
+    };
 
     return (
         <>
             <div className="header">
                 <div className="header-left">
-                    <a href="#default" className="logo">
+                    <Link to="/" className="logo">
                         <img className="logoImage" src="/LogoVersions/Logo.png" alt="Tutoria Logo"/>
-                    </a>
-                    <a href="#default" className="logoName">Tutoria</a>
-                    <a href="#default" className="headerItem">Find a Tutor</a>
-                    <a href="#default" className="headerItem">Become a Tutor</a>
+                    </Link>
+                    <Link to="/" className="logoName">Tutoria</Link>
+                    <Link to="/find-tutor" className="headerItem">Find a Tutor</Link>
+                    <Link to="/become-tutor" className="headerItem">Become a Tutor</Link>
                 </div>
 
                 <div className="header-right">
@@ -23,24 +31,18 @@ const Header = ({ user, setUser }) => {
                         <button onClick={() => setShowAuth(true)} title="auth">Login</button>
                     ) : (
                         <>
-                            <a href="/messages" className="messages">
+                            <Link to="/messages" className="messages">
                                 <img className="messagesIcon" src="/Icons/Messages.png" alt="Messages"/>
-                            </a>
-                            <a href="/notifications" className="notifications">
+                            </Link>
+                            <Link to="/notifications" className="notifications">
                                 <img className="notificationsIcon" src="/Icons/Notifications.png" alt="Notifications"/>
-                            </a>
-                            {window.location.pathname === '/profile' ? (
-                                <button title="Logout" onClick={() => {
-                                    localStorage.removeItem('token');
-                                    setUser(null);
-                                    window.location.href = '/';
-                                }}>
-                                    Logout
-                                </button>
+                            </Link>
+                            {location.pathname === '/profile' ? (
+                                <button title="Logout" onClick={handleLogout}>Logout</button>
                             ) : (
-                                <a href="/profile" className="defaultPicture">
+                                <Link to="/profile" className="defaultPicture">
                                     <img className="defaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture"/>
-                                </a>
+                                </Link>
                             )}
                         </>
                     )}
@@ -53,6 +55,5 @@ const Header = ({ user, setUser }) => {
         </>
     );
 };
-
 
 export default Header;
