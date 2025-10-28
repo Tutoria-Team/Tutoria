@@ -1,0 +1,109 @@
+/* Profile Page Container */
+.profile-page {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Profile Picture */
+.profile-defaultPictureIcon {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 20px 0;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Profile Name */
+h3 {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Profile Tab Buttons */
+.profile-tab {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.profile-tablink {
+  padding: 10px 20px;
+  font-size: 1rem;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  margin: 0 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+}
+
+.profile-tablink.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.profile-tablink:hover {
+  background-color: #e0e0e0;
+}
+
+/* Profile Tab Content */
+.profile-tabcontent {
+  display: none;
+  margin-top: 30px;
+}
+
+.profile-tabcontent p {
+  font-size: 1rem;
+  color: #333;
+}
+
+.profile-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-info p {
+  margin: 5px 0;
+  font-size: 1.1rem;
+}
+
+.profile-item {
+  margin-top: 20px;
+}
+
+.profile-session {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.profile-session-left h4 {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.profile-session-left p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.profile-session-right p {
+  font-size: 1rem;
+  color: #007bff;
+}
+
+.profile-session-right p:first-child {
+  font-weight: bold;
+}
