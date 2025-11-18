@@ -1,0 +1,11 @@
+.title-container {
+  background-color: white;
+  padding: 30px 0;
+  text-align: center;
+  border-bottom: 2px solid #f1f1f1;
+  margin-bottom: 30px;
+}
+
+.page-title {
+  margin: 0;
+}

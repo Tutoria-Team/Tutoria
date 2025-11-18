@@ -22,8 +22,9 @@ const Header = ({ user, setUser }) => {
                         <img className="logoImage" src="/LogoVersions/Logo.png" alt="Tutoria Logo"/>
                     </Link>
                     <Link to="/" className="logoName">Tutoria</Link>
-                    <Link to="/find-tutor" className="headerItem">Find a Tutor</Link>
-                    <Link to="/become-tutor" className="headerItem">Become a Tutor</Link>
+                    <Link to="/find-a-tutor" className="headerItem">Find a Tutor</Link>
+                    <Link to="/become-a-tutor" className="headerItem">Become a Tutor</Link>
+
                 </div>
 
                 <div className="header-right">

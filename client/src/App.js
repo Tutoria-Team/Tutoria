@@ -3,6 +3,8 @@ import './App.css';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
+import FindATutor from './pages/FindATutor';
+import BecomeATutor from './pages/BecomeATutor';
 import Profile from './pages/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -30,11 +32,12 @@ const App = () => {
   return (
     <Router>
       <Header user={user} setUser={setUser} />
-      <div style={{ maxWidth: 800, margin: 'auto', padding: 20 }}>
+      <div>
         <Routes>
+          <Route path="/" element={<FindATutor />} />
+          <Route path="/find-a-tutor" element={<FindATutor />} />
+          <Route path="/become-a-tutor" element={<BecomeATutor />} />
           <Route path="/profile" element={<Profile user={user} />} />
-          {/* You can add more routes here */}
-          <Route path="/" element={<div>Welcome to Tutoria</div>} />
         </Routes>
       </div>
     </Router>
