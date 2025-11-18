@@ -1,109 +1,212 @@
-/* Profile Page Container */
+/* Main container for profile page */
 .profile-page {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
+    display: grid;
+    grid-template-columns: 1fr 3fr; /* 1/4 for profile info, 3/4 for content */
+    gap: 2rem;
+    width: 100%;
+    /* ADDED: Adds 2rem of padding on all sides */
+    padding: 2rem; 
+    /* This ensures the padding is included in the width calculation */
+    box-sizing: border-box; 
 }
 
-/* Profile Picture */
+/* --- LEFT COLUMN --- */
+.profile-content-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center all items in the left column */
+    justify-content: flex-start;
+    gap: 1rem;
+    align-self: start; /* Stick to the top */
+}
+
+.profile-picture-container {
+    background-color: #E0E0E0; /* Light grey background for the picture */
+    border-radius: 12px; /* Rounded square */
+    padding: 1rem;
+    border: 1px solid #CCC;
+}
+
 .profile-defaultPictureIcon {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin: 20px 0;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%; /* Make the inner icon a circle */
+    object-fit: cover;
+    background-color: #B0B0B0; /* Inner circle background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: white;
 }
 
-/* Profile Name */
-h3 {
-  text-align: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-/* Profile Tab Buttons */
-.profile-tab {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.profile-tablink {
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  margin: 0 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  border-radius: 5px;
-}
-
-.profile-tablink.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
-}
-
-.profile-tablink:hover {
-  background-color: #e0e0e0;
-}
-
-/* Profile Tab Content */
-.profile-tabcontent {
-  display: none;
-  margin-top: 30px;
-}
-
-.profile-tabcontent p {
-  font-size: 1rem;
-  color: #333;
+.update-profile-link {
+    font-size: 0.9rem;
+    color: #007bff;
+    text-decoration: underline;
 }
 
 .profile-info {
-  text-align: center;
-  margin-bottom: 20px;
+    font-size: 1rem;
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5rem;
+    word-wrap: break-word; /* Break long emails */
+}
+
+.profile-info h3 {
+    margin: 0.25rem 0;
+    font-size: 1.25rem;
 }
 
 .profile-info p {
-  margin: 5px 0;
-  font-size: 1.1rem;
+    margin: 0.25rem 0;
+    color: #555;
 }
 
-.profile-item {
-  margin-top: 20px;
+.role-buttons {
+    display: flex;
+    flex-direction: column; /* Stack buttons */
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 200px; /* Give buttons a max width */
 }
 
-.profile-session {
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  background-color: #f9f9f9;
-  border-radius: 5px;
-  margin-bottom: 20px;
+.role-button {
+    padding: 0.5rem;
+    border: 1px solid #AAA;
+    border-radius: 20px; /* Pill shape */
+    background-color: #f0f0f0;
+    cursor: pointer;
+    text-align: center;
+    font-weight: 500;
 }
 
-.profile-session-left h4 {
-  font-size: 1.25rem;
-  font-weight: bold;
+.role-button.active {
+    background-color: #D0D0D0; /* Darker grey for active */
+    border-color: #888;
 }
 
-.profile-session-left p {
-  font-size: 1rem;
-  color: #555;
+/* --- RIGHT COLUMN --- */
+.profile-content-right {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem; /* Space between sections */
+    overflow-y: auto;
 }
 
-.profile-session-right p {
-  font-size: 1rem;
-  color: #007bff;
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 }
 
-.profile-session-right p:first-child {
-  font-weight: bold;
+h2 {
+    font-size: 1.75rem;
+    margin: 0;
+    padding-bottom: 0.5rem;
+    color: #222;
+}
+
+/* Upcoming Session Card */
+.upcoming-session-card {
+    border: 1px solid #CCC;
+    border-radius: 8px;
+    overflow: hidden; /* To keep rounded corners */
+}
+
+.session-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E6F3E6; /* Light green */
+    padding: 1rem;
+    border-bottom: 1px solid #CCC;
+}
+
+.session-header h4 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.session-header span {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.session-body {
+    background-color: #EBF4FA; /* Light blue */
+    height: 150px; /* Height for the blue area */
+    padding: 1rem;
+}
+
+/* Courses Taught Section */
+.courses-taught-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid */
+    gap: 1.5rem;
+}
+
+.course-card {
+    background-color: #EBF4FA; /* Light blue */
+    border: 1px solid #B0C4D4; /* Darker blue border */
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.course-card h4 {
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.course-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+.course-rating p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+.course-rating strong {
+    font-size: 1.2rem;
+    color: #333;
+}
+.course-rating small {
+    font-size: 0.8rem;
+    color: #555;
+}
+
+.course-price strong {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .profile-page {
+        grid-template-columns: 1fr; /* Stack columns */
+    }
+
+    .profile-content-left {
+        border-right: none;
+        padding-right: 0;
+        border-bottom: 1px solid #f0f0f0; /* Add bottom border when stacked */
+        padding-bottom: 2rem;
+        align-self: stretch;
+    }
+
+    .role-buttons {
+        flex-direction: row; /* Show buttons side-by-side on mobile */
+        justify-content: center;
+        max-width: none;
+    }
+    .role-button {
+        flex: 1;
+    }
 }
