@@ -4,24 +4,30 @@ import React from 'react';
 // We can pass in a 'user' prop to make the component dynamic
 const Profile = ({ user }) => {
 
-  // Set default values in case no user is passed
-  const userName = user?.name || 'Nicole Wu';
-  const userEmail = user?.email || 'wun@rpi.edu';
+  // If the user data isn't loaded yet, show a loading message
+  if (!user) {
+    return (
+      <div className="profile-page" style={{ padding: '2rem' }}>
+        <p>Loading profile...</p>
+      </div>
+    );
+  }
+
+  // Get user data from props, provide generic fallbacks if fields are empty
+  const userName = user.name || 'No Name Provided';
+  const userEmail = user.email || 'No Email Provided';
 
   return (
     <div className="profile-page">
       {/* --- LEFT COLUMN --- */}
       <div className="profile-content-left">
-        <div className="profile-picture-container">
-          {/* Using a placeholder icon as in the mockup */}
-          <div className="profile-defaultPictureIcon">:)</div>
-        </div>
+{/* ... existing code ... */ }
         <a href="#" className="update-profile-link">Update Profile</a>
         
         <div className="profile-info">
           <h3><strong>{userName}</strong></h3>
           <p>{userEmail}</p>
-        </div>
+        </div>        
 
         <div className="role-buttons">
           <button className="role-button active">Student</button>
