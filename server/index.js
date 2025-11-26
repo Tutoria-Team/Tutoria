@@ -56,15 +56,13 @@ const sendOtp = async (email, mobile_number, otp) => {
 // =======================
 app.post('/api/signup', async (req, res) => {
   const { first_name, last_name, email, mobile_number, password } = req.body;
-
-  if (!first_name || !last_name || !email || !password) {
+  if (!first_name || !last_name || !email || !password)
     return res.status(400).send({ error: 'Missing required fields' });
-  }
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = crypto.randomInt(100000, 999999).toString();
-    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
 
     await pool.query(
       `INSERT INTO users 
@@ -75,7 +73,7 @@ app.post('/api/signup', async (req, res) => {
 
     await sendOtp(email, mobile_number, otp);
 
-    res.status(201).send({ message: 'Signup successful. OTP sent.' });
+    res.status(201).send({ message: 'Signup successful. OTP sent.', email, mobile_number });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error during signup' });
@@ -87,7 +85,6 @@ app.post('/api/signup', async (req, res) => {
 // =======================
 app.post('/api/validate-otp', async (req, res) => {
   const { email, mobile_number, otp } = req.body;
-
   try {
     const result = await pool.query(
       `SELECT * FROM users 
@@ -97,9 +94,8 @@ app.post('/api/validate-otp', async (req, res) => {
       [email, mobile_number, otp]
     );
 
-    if (result.rowCount === 0) {
+    if (result.rowCount === 0)
       return res.status(400).send({ error: 'Invalid or expired OTP' });
-    }
 
     await pool.query(
       `UPDATE users SET otp = NULL, otp_expiry = NULL 
@@ -119,23 +115,19 @@ app.post('/api/validate-otp', async (req, res) => {
 // =======================
 app.post('/api/login', async (req, res) => {
   const { emailOrMobile, password } = req.body;
-
   try {
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1 OR mobile_number = $2',
       [emailOrMobile, emailOrMobile]
     );
 
-    if (result.rowCount === 0) {
+    if (result.rowCount === 0)
       return res.status(401).send({ error: 'Invalid credentials' });
-    }
 
     const user = result.rows[0];
     const isMatch = await bcrypt.compare(password, user.password_hash);
-
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(401).send({ error: 'Invalid credentials' });
-    }
 
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
@@ -148,11 +140,62 @@ app.post('/api/login', async (req, res) => {
         email: user.email,
         profile_photo_url: user.profile_photo_url,
         is_tutor: user.is_tutor,
-      }
+      },
     });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error during login' });
+  }
+});
+
+// =======================
+// Forgot Password - Request OTP
+// =======================
+app.post('/api/request-password-reset', async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).send({ error: 'Email required' });
+
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE email=$1', [email]);
+    if (result.rowCount === 0) return res.status(404).send({ error: 'User not found' });
+
+    const otp = crypto.randomInt(100000, 999999).toString();
+    const otpExpiry = new Date(Date.now() + 10 * 60 * 1000);
+    await pool.query('UPDATE users SET otp=$1, otp_expiry=$2 WHERE email=$3', [otp, otpExpiry, email]);
+
+    await sendOtp(email, null, otp);
+
+    res.send({ message: 'OTP sent to email' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error generating OTP' });
+  }
+});
+
+// =======================
+// Forgot Password - Reset
+// =======================
+app.post('/api/reset-password', async (req, res) => {
+  const { email, otp, newPassword } = req.body;
+  if (!email || !otp || !newPassword) return res.status(400).send({ error: 'Missing fields' });
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM users WHERE email=$1 AND otp=$2 AND otp_expiry > NOW()',
+      [email, otp]
+    );
+    if (result.rowCount === 0) return res.status(400).send({ error: 'Invalid or expired OTP' });
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    await pool.query(
+      'UPDATE users SET password_hash=$1, otp=NULL, otp_expiry=NULL WHERE email=$2',
+      [hashedPassword, email]
+    );
+
+    res.send({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error resetting password' });
   }
 });
 
