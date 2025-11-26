@@ -54,9 +54,9 @@ const Profile = ({ user }) => {
   return (
     <div className="profile-page">
       <div className="profile-content-left">
-        <a href="#" className="update-profile-link">Update Profile</a>
         <div className="profile-info">
           <img src={profilePhoto} alt="Profile" className="profile-photo" />
+          <a href="#" className="update-profile-link">Update Profile</a>
           <h3><strong>{userName}</strong></h3>
           <p>{userEmail}</p>
         </div>        
