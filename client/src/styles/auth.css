@@ -21,6 +21,16 @@
 		width: 95%;
 		height: 90vh;
 	}
+
+	.name-row {
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	.name-row input {
+		width: 100%;
+		max-width: none;
+	}
 }
 
 .close-btn {
@@ -131,4 +141,14 @@
     text-decoration: underline;
     padding: 0;
     margin-bottom: 10px;
+}
+
+.name-row {
+	display: flex;
+	gap: 10px;
+}
+
+.name-row input {
+	flex: 1;
+	width: calc(50% - 5px);
 }

@@ -25,8 +25,10 @@ const Signup = ({ onSuccess }) => {
 
     return (
         <form onSubmit={handleSubmit} className="auth-form">
-            <input type="text" placeholder="First Name" value={first_name} onChange={(e) => setFirstName(e.target.value)} required />
-            <input type="text" placeholder="Last Name" value={last_name} onChange={(e) => setLastName(e.target.value)} required />
+            <div className="name-row">
+                <input type="text" placeholder="First Name" value={first_name} onChange={(e) => setFirstName(e.target.value)} required />
+                <input type="text" placeholder="Last Name" value={last_name} onChange={(e) => setLastName(e.target.value)} required />
+            </div>
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} required />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
