@@ -18,7 +18,7 @@ CREATE TABLE users (
     last_name VARCHAR(100) NOT NULL,
     mobile_number VARCHAR(15) UNIQUE,
     password_hash TEXT NOT NULL,         
-    profile_photo_url TEXT DEFAULT '/default-profile.png',
+    profile_photo_url TEXT DEFAULT '/Icons/Default_Profile_Picture.png',
     is_tutor BOOLEAN DEFAULT FALSE NOT NULL,
 
     -- OTP Auth Flow

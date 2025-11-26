@@ -19,7 +19,7 @@ const Profile = ({ user }) => {
 
   // Fetch tutor's courses if user is a tutor
   useEffect(() => {
-    if (!user) return; // Guard: wait until user is loaded
+    if (!user) return;
     if (user.is_tutor) {
       axios.get(`/api/courses?tutor_email=${user.email}`)
         .then(res => setCourses(res.data))
@@ -32,14 +32,13 @@ const Profile = ({ user }) => {
 
   // Fetch user's upcoming sessions
   useEffect(() => {
-    if (!user) return; // Guard: wait until user is loaded
+    if (!user) return;
     axios.get(`/api/sessions?user_email=${user.email}`)
       .then(res => setSessions(res.data))
       .catch(err => console.error('Error fetching sessions:', err))
       .finally(() => setLoadingSessions(false));
   }, [user]);
 
-  // Early return if user data not yet loaded
   if (!user) {
     return (
       <div className="profile-page" style={{ padding: '2rem' }}>
@@ -50,11 +49,10 @@ const Profile = ({ user }) => {
 
   const userName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'No Name Provided';
   const userEmail = user.email || 'No Email Provided';
-  const profilePhoto = user.profile_photo_url || '/default-profile.png';
+  const profilePhoto = user.profile_photo_url || '/Icons/Default_Profile_Picture.png';
 
   return (
     <div className="profile-page">
-      {/* --- LEFT COLUMN --- */}
       <div className="profile-content-left">
         <a href="#" className="update-profile-link">Update Profile</a>
         <div className="profile-info">
@@ -68,10 +66,7 @@ const Profile = ({ user }) => {
         </div>
       </div>
 
-      {/* --- RIGHT COLUMN --- */}
       <div className="profile-content-right">
-
-        {/* --- UPCOMING SESSIONS --- */}
         <div className="profile-section">
           <h2>Upcoming Sessions</h2>
           {loadingSessions ? (
@@ -94,7 +89,6 @@ const Profile = ({ user }) => {
           )}
         </div>
 
-        {/* --- COURSES TAUGHT --- */}
         {user.is_tutor && (
           <div className="profile-section">
             <h2>Courses Taught</h2>
@@ -124,7 +118,6 @@ const Profile = ({ user }) => {
           </div>
         )}
 
-        {/* --- AVAILABILITY --- */}
         <div className="profile-section">
           <h2>Availability</h2>
           <p>Your availability calendar will be displayed here.</p>
