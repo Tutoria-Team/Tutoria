@@ -118,12 +118,12 @@ app.post('/api/validate-otp', async (req, res) => {
 // Login Endpoint
 // =======================
 app.post('/api/login', async (req, res) => {
-  const { email_or_mobile, password } = req.body;
+  const { emailOrMobile, password } = req.body;
 
   try {
     const result = await pool.query(
       'SELECT * FROM users WHERE email = $1 OR mobile_number = $2',
-      [email_or_mobile, email_or_mobile]
+      [emailOrMobile, emailOrMobile]
     );
 
     if (result.rowCount === 0) {

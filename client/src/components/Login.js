@@ -13,7 +13,7 @@ const Login = ({ setUser, setShowAuth, prefillEmail = '' }) => {
         e.preventDefault();
         try {
             const response = await axios.post('/api/login', {
-                email_or_mobile: emailOrMobile,
+                emailOrMobile,
                 password
             });
 
