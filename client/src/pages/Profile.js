@@ -1,12 +1,21 @@
 import '../styles/profile.css';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ user }) => {
+  const navigate = useNavigate();
   const [courses, setCourses] = useState([]);
   const [sessions, setSessions] = useState([]);
   const [loadingCourses, setLoadingCourses] = useState(true);
   const [loadingSessions, setLoadingSessions] = useState(true);
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (!user) {
+      navigate('/'); // Redirect to home
+    }
+  }, [user, navigate]);
 
   // Fetch tutor's courses if user is a tutor
   useEffect(() => {

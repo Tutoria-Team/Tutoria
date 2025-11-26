@@ -10,6 +10,22 @@ const app = express();
 app.use(express.json());
 
 // =======================
+// JWT Authentication Middleware
+// =======================
+const authenticateToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1]; // Bearer <token>
+
+  if (!token) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.user = user;
+    next();
+  });
+};
+
+// =======================
 // Sanity Check
 // =======================
 app.get('/api/test', (req, res) => {
@@ -145,6 +161,24 @@ app.post('/api/login', async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error during login' });
+  }
+});
+
+// =======================
+// Get current user
+// =======================
+app.get('/api/me', authenticateToken, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, first_name, last_name, email, profile_photo_url, is_tutor FROM users WHERE id=$1',
+      [req.user.id]
+    );
+    if (result.rowCount === 0) return res.sendStatus(404);
+
+    res.send({ user: result.rows[0] });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching user' });
   }
 });
 
