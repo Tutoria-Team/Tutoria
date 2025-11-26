@@ -1,26 +1,45 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const OtpVerification = ({ email: initialEmail = '', mobile_number: initialMobile = '' }) => {
     const [email, setEmail] = useState(initialEmail);
     const [mobile_number, setMobileNumber] = useState(initialMobile);
     const [otp, setOtp] = useState('');
+    const navigate = useNavigate(); // for redirecting
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await axios.post('/api/validate-otp', { email, mobile_number, otp });
             alert('OTP validated successfully!');
+            navigate('/login'); // redirect to login
         } catch (error) {
-            alert('Error validating OTP');
+            alert(error.response?.data?.error || 'Error validating OTP');
         }
     };
 
     return (
         <form onSubmit={handleSubmit} className="auth-form">
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} />
-            <input type="text" placeholder="OTP" value={otp} onChange={(e) => setOtp(e.target.value)} required />
+            <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            <input
+                type="text"
+                placeholder="Mobile Number"
+                value={mobile_number}
+                onChange={(e) => setMobileNumber(e.target.value)}
+            />
+            <input
+                type="text"
+                placeholder="OTP"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                required
+            />
             <button type="submit">Verify OTP</button>
         </form>
     );

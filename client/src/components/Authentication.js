@@ -1,6 +1,5 @@
 import '../styles/auth.css';
 import React, { useState } from 'react';
-import axios from 'axios';
 import Signup from './Signup';
 import OtpVerification from './OtpVerification';
 import Login from './Login';
@@ -10,7 +9,7 @@ const Authentication = ({ setShowAuth, setUser }) => {
     const [signupData, setSignupData] = useState({});
 
     const handleSignupSuccess = (data) => {
-        setSignupData(data);
+        setSignupData(data); // contains email and mobile_number
         setView('otp');
     };
     
@@ -43,7 +42,12 @@ const Authentication = ({ setShowAuth, setUser }) => {
                         </>
                     )}
 
-                    {view === 'otp' && <OtpVerification email={signupData.email} mobile_number={signupData.mobile_number} />}
+                    {view === 'otp' && (
+                        <OtpVerification 
+                            email={signupData.email} 
+                            mobile_number={signupData.mobile_number} 
+                        />
+                    )}
                 </div>
             </div>
         </div>

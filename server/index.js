@@ -1,126 +1,163 @@
-require("dotenv").config({ path: __dirname + "/.env" });
+require('dotenv').config({ path: __dirname + '/.env' });
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const pool = require(__dirname + "/config/db.config.js");
+const pool = require(__dirname + '/config/db.config.js');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 const app = express();
 app.use(express.json());
 
+// =======================
 // Sanity Check
+// =======================
 app.get('/api/test', (req, res) => {
   res.send('API is working!');
 });
 
-// Helper function to send OTP
+// =======================
+// Helper: Send OTP
+// =======================
 const sendOtp = async (email, mobile_number, otp) => {
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'your_email@gmail.com',
-            pass: 'your_email_password',
-        },
-    });
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`OTP for ${email || mobile_number}: ${otp}`);
+    return;
+  }
 
-    const message = {
-        from: 'your_email@gmail.com',
-        to: email,
-        subject: 'Your OTP Code',
-        text: `Your OTP code is ${otp}`,
-    };
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT || 587,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
 
-    try {
-        await transporter.sendMail(message);
-        console.log('OTP sent');
-    } catch (error) {
-        console.error('Error sending OTP:', error);
-    }
+  const message = {
+    from: process.env.SMTP_USER,
+    to: email,
+    subject: 'Your OTP Code',
+    text: `Your OTP code is ${otp}. It expires in 10 minutes.`,
+  };
+
+  try {
+    await transporter.sendMail(message);
+    console.log(`OTP sent to ${email}`);
+  } catch (error) {
+    console.error('Error sending OTP:', error);
+    throw new Error('Failed to send OTP');
+  }
 };
 
-// Signup endpoint
+// =======================
+// Signup Endpoint
+// =======================
 app.post('/api/signup', async (req, res) => {
-    const { name, email, mobile_number, password } = req.body;
+  const { first_name, last_name, email, mobile_number, password } = req.body;
+
+  if (!first_name || !last_name || !email || !password) {
+    return res.status(400).send({ error: 'Missing required fields' });
+  }
+
+  try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const otp = crypto.randomInt(100000, 999999).toString();
     const otpExpiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    try {
-        await pool.query(
-            'INSERT INTO users (name, email, mobile_number, hashed_password, otp, otp_expiry) VALUES ($1, $2, $3, $4, $5, $6)',
-            [name, email, mobile_number, hashedPassword, otp, otpExpiry]
-        );
+    await pool.query(
+      `INSERT INTO users 
+       (first_name, last_name, email, mobile_number, password_hash, otp, otp_expiry) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [first_name, last_name, email, mobile_number, hashedPassword, otp, otpExpiry]
+    );
 
-        await sendOtp(email, mobile_number, otp);
-        res.status(201).send({ message: 'Signup successful. OTP sent.' });
-    } catch (error) {
-        res.status(500).send({ error: 'Error during signup' });
-    }
+    await sendOtp(email, mobile_number, otp);
+
+    res.status(201).send({ message: 'Signup successful. OTP sent.' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error during signup' });
+  }
 });
 
-// Validate OTP endpoint
+// =======================
+// OTP Validation Endpoint
+// =======================
 app.post('/api/validate-otp', async (req, res) => {
-    const { email, mobile_number, otp } = req.body;
+  const { email, mobile_number, otp } = req.body;
 
-    try {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE (email = $1 OR mobile_number = $2) AND otp = $3 AND otp_expiry > NOW()',
-            [email, mobile_number, otp]
-        );
+  try {
+    const result = await pool.query(
+      `SELECT * FROM users 
+       WHERE (email = $1 OR mobile_number = $2) 
+         AND otp = $3 
+         AND otp_expiry > NOW()`,
+      [email, mobile_number, otp]
+    );
 
-        if (result.rowCount === 0) {
-            return res.status(400).send({ error: 'Invalid or expired OTP' });
-        }
-
-        await pool.query(
-            'UPDATE users SET otp = NULL, otp_expiry = NULL WHERE email = $1 OR mobile_number = $2',
-            [email, mobile_number]
-        );
-
-        res.send({ message: 'OTP validated successfully' });
-    } catch (error) {
-        res.status(500).send({ error: 'Error during OTP validation' });
+    if (result.rowCount === 0) {
+      return res.status(400).send({ error: 'Invalid or expired OTP' });
     }
+
+    await pool.query(
+      `UPDATE users SET otp = NULL, otp_expiry = NULL 
+       WHERE email = $1 OR mobile_number = $2`,
+      [email, mobile_number]
+    );
+
+    res.send({ message: 'OTP validated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error during OTP validation' });
+  }
 });
 
-// Login endpoint
+// =======================
+// Login Endpoint
+// =======================
 app.post('/api/login', async (req, res) => {
-    const { email_or_mobile, password } = req.body;
+  const { email_or_mobile, password } = req.body;
 
-    try {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE email = $1 OR mobile_number = $2',
-            [email_or_mobile, email_or_mobile]
-        );
+  try {
+    const result = await pool.query(
+      'SELECT * FROM users WHERE email = $1 OR mobile_number = $2',
+      [email_or_mobile, email_or_mobile]
+    );
 
-        if (result.rowCount === 0) {
-            return res.status(401).send({ error: 'Invalid credentials' });
-        }
-
-        const user = result.rows[0];
-        const isMatch = await bcrypt.compare(password, user.hashed_password);
-
-        if (!isMatch) {
-            return res.status(401).send({ error: 'Invalid credentials' });
-        }
-
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-        res.send({
-          token,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            profile_photo_url: user.profile_photo_url
-          }
-        });
-    } catch (error) {
-        res.status(500).send({ error: 'Error during login' });
+    if (result.rowCount === 0) {
+      return res.status(401).send({ error: 'Invalid credentials' });
     }
+
+    const user = result.rows[0];
+    const isMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!isMatch) {
+      return res.status(401).send({ error: 'Invalid credentials' });
+    }
+
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.send({
+      token,
+      user: {
+        id: user.id,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        profile_photo_url: user.profile_photo_url,
+        is_tutor: user.is_tutor,
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error during login' });
+  }
 });
 
-
-// Start server
+// =======================
+// Start Server
+// =======================
 const PORT = process.env.PORT || 9000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

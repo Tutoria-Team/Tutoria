@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 const Login = ({ setUser, setShowAuth }) => {
-    const [email_or_mobile, setEmailOrMobile] = useState('');
+    const [emailOrMobile, setEmailOrMobile] = useState('');
     const [password, setPassword] = useState('');
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('/api/login', {
-                email_or_mobile,
+                email_or_mobile: emailOrMobile, // ✅ must match backend
                 password
             });
 
@@ -25,7 +25,8 @@ const Login = ({ setUser, setShowAuth }) => {
             // Close the auth modal
             setShowAuth(false);
         } catch (error) {
-            alert('Error during login');
+            // Show backend error message if available
+            alert(error.response?.data?.error || 'Error during login');
             console.error(error);
         }
     };
@@ -35,7 +36,7 @@ const Login = ({ setUser, setShowAuth }) => {
             <input
                 type="text"
                 placeholder="Email or Mobile Number"
-                value={email_or_mobile}
+                value={emailOrMobile}
                 onChange={(e) => setEmailOrMobile(e.target.value)}
                 required
             />
