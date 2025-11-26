@@ -1,32 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const Login = ({ setUser, setShowAuth }) => {
-    const [emailOrMobile, setEmailOrMobile] = useState('');
+const Login = ({ setUser, setShowAuth, prefillEmail = '' }) => {
+    const [emailOrMobile, setEmailOrMobile] = useState(prefillEmail);
     const [password, setPassword] = useState('');
+
+    useEffect(() => {
+        setEmailOrMobile(prefillEmail);
+    }, [prefillEmail]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await axios.post('/api/login', {
-                email_or_mobile: emailOrMobile, // ✅ must match backend
+                email_or_mobile: emailOrMobile,
                 password
             });
 
             const userData = response.data.user;
-
-            // Save token if needed
             localStorage.setItem('token', response.data.token);
-
-            // Update global user state
-            console.log('Logged in user:', userData);
             setUser(userData);
-
-            // Close the auth modal
             setShowAuth(false);
         } catch (error) {
-            // Show backend error message if available
-            alert(error.response?.data?.error || 'Error during login');
+            alert('Error during login');
             console.error(error);
         }
     };

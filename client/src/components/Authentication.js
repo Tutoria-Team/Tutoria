@@ -12,6 +12,11 @@ const Authentication = ({ setShowAuth, setUser }) => {
         setSignupData(data); // contains email and mobile_number
         setView('otp');
     };
+
+    const handleOtpSuccess = () => {
+        // Switch to login view after OTP validation
+        setView('login');
+    };
     
     return (
         <div className="auth-popup">
@@ -25,7 +30,11 @@ const Authentication = ({ setShowAuth, setUser }) => {
 
                     {view === 'login' && (
                         <>
-                            <Login setUser={setUser} setShowAuth={setShowAuth} />
+                            <Login 
+                                setUser={setUser} 
+                                setShowAuth={setShowAuth} 
+                                prefillEmail={signupData.email || ''} 
+                            />
                             <div className="auth-footer">
                                 <button className="link-btn">Forgot password?</button>
                                 <p>Don't have an account? <span className="link-text" onClick={() => setView('signup')}>Sign up</span></p>
@@ -46,6 +55,7 @@ const Authentication = ({ setShowAuth, setUser }) => {
                         <OtpVerification 
                             email={signupData.email} 
                             mobile_number={signupData.mobile_number} 
+                            onSuccess={handleOtpSuccess} // callback after OTP success
                         />
                     )}
                 </div>
