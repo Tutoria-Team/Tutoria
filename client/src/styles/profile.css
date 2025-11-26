@@ -4,27 +4,41 @@
     grid-template-columns: 1fr 3fr; /* 1/4 for profile info, 3/4 for content */
     gap: 2rem;
     width: 100%;
-    /* ADDED: Adds 2rem of padding on all sides */
-    padding: 2rem; 
-    /* This ensures the padding is included in the width calculation */
-    box-sizing: border-box; 
+    padding: 2rem;
+    box-sizing: border-box;
 }
 
 /* --- LEFT COLUMN --- */
 .profile-content-left {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center all items in the left column */
+    align-items: center; 
     justify-content: flex-start;
     gap: 1rem;
-    align-self: start; /* Stick to the top */
+    align-self: start; 
 }
 
+/* --- Profile Photo --- */
+.profile-photo {
+    width: 100px; /* Shrink the photo to 100px width */
+    height: 100px; /* Keep the height the same */
+    object-fit: cover; /* Make sure the image covers the area without distortion */
+    border-radius: 50%; /* Keep it circular */
+    border: 2px solid #ccc; /* Optional: Add a border for a neat appearance */
+}
+
+/* --- Profile Picture Container --- */
 .profile-picture-container {
     background-color: #E0E0E0; /* Light grey background for the picture */
-    border-radius: 12px; /* Rounded square */
-    padding: 1rem;
-    border: 1px solid #CCC;
+    border-radius: 50%; /* Circular shape */
+    padding: 0.5rem;
+    border: 2px solid #CCC;
+    width: 110px; /* Set fixed width */
+    height: 110px; /* Set fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .profile-defaultPictureIcon {
@@ -44,6 +58,8 @@
     font-size: 0.9rem;
     color: #007bff;
     text-decoration: underline;
+    display: inline-block; 
+    margin-top: 0.5rem;
 }
 
 .profile-info {
@@ -51,7 +67,7 @@
     width: 100%;
     text-align: center;
     margin-top: 0.5rem;
-    word-wrap: break-word; /* Break long emails */
+    word-wrap: break-word; 
 }
 
 .profile-info h3 {
@@ -64,22 +80,28 @@
     color: #555;
 }
 
+/* --- Role Buttons Container --- */
 .role-buttons {
     display: flex;
-    flex-direction: column; /* Stack buttons */
-    gap: 0.5rem;
+    justify-content: space-evenly; /* Evenly space the buttons */
+    gap: 0.5rem; /* Reduced gap to make buttons closer */
     width: 100%;
-    max-width: 200px; /* Give buttons a max width */
+    max-width: 220px; /* Limit the width further to make buttons more compact */
+    margin-top: 0.5rem; /* Reduced margin */
 }
 
+/* --- Individual Role Button --- */
 .role-button {
-    padding: 0.5rem;
+    padding: 0.2rem 0.8rem; /* Thinner padding for a more compact button */
+    font-size: 0.85rem; /* Smaller font size */
     border: 1px solid #AAA;
     border-radius: 20px; /* Pill shape */
     background-color: #f0f0f0;
     cursor: pointer;
     text-align: center;
     font-weight: 500;
+    flex: 1; /* Buttons will expand equally */
+    display: inline-block;
 }
 
 .role-button.active {
@@ -173,10 +195,12 @@ h2 {
     margin: 0;
     font-size: 0.9rem;
 }
+
 .course-rating strong {
     font-size: 1.2rem;
     color: #333;
 }
+
 .course-rating small {
     font-size: 0.8rem;
     color: #555;
@@ -206,6 +230,7 @@ h2 {
         justify-content: center;
         max-width: none;
     }
+
     .role-button {
         flex: 1;
     }

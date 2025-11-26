@@ -234,6 +234,31 @@ app.post('/api/reset-password', async (req, res) => {
 });
 
 // =======================
+// Get Courses Taught by Tutor
+// =======================
+app.get('/api/courses', authenticateToken, async (req, res) => {
+  const { tutor_email } = req.query;
+
+  if (!tutor_email) return res.status(400).send({ error: 'Tutor email is required' });
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM tutor_courses WHERE tutor_email = $1',
+      [tutor_email]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).send({ error: 'No courses found for this tutor' });
+    }
+
+    res.send(result.rows);  // Returning the courses taught by the tutor
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching courses' });
+  }
+});
+
+// =======================
 // Start Server
 // =======================
 const PORT = process.env.PORT || 9000;

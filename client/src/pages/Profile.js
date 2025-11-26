@@ -13,7 +13,7 @@ const Profile = ({ user }) => {
   // Redirect if not logged in
   useEffect(() => {
     if (!user) {
-      navigate('/'); // Redirect to home
+      navigate('/'); // Redirect to home if not logged in
     }
   }, [user, navigate]);
 
@@ -56,13 +56,19 @@ const Profile = ({ user }) => {
       <div className="profile-content-left">
         <div className="profile-info">
           <img src={profilePhoto} alt="Profile" className="profile-photo" />
-          <a href="#" className="update-profile-link">Update Profile</a>
           <h3><strong>{userName}</strong></h3>
           <p>{userEmail}</p>
-        </div>        
+          <a href="#" className="update-profile-link">Update Profile</a>
+        </div>
+
+        {/* Always show the Student button */}
         <div className="role-buttons">
           <button className={`role-button ${!user.is_tutor ? 'active' : ''}`}>Student</button>
-          <button className={`role-button ${user.is_tutor ? 'active' : ''}`}>Tutor</button>
+
+          {/* Show the Tutor button only if the user is a tutor */}
+          {user.is_tutor && (
+            <button className={`role-button ${user.is_tutor ? 'active' : ''}`}>Tutor</button>
+          )}
         </div>
       </div>
 
@@ -89,6 +95,7 @@ const Profile = ({ user }) => {
           )}
         </div>
 
+        {/* Show Courses Taught only if the user is a tutor */}
         {user.is_tutor && (
           <div className="profile-section">
             <h2>Courses Taught</h2>
@@ -118,10 +125,13 @@ const Profile = ({ user }) => {
           </div>
         )}
 
-        <div className="profile-section">
-          <h2>Availability</h2>
-          <p>Your availability calendar will be displayed here.</p>
-        </div>
+        {/* Show Availability section only if user is a tutor */}
+        {user.is_tutor && (
+          <div className="profile-section">
+            <h2>Availability</h2>
+            <p>Your availability calendar will be displayed here.</p>
+          </div>
+        )}
       </div>
     </div>
   );
