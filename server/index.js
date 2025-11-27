@@ -145,7 +145,7 @@ app.post('/api/login', async (req, res) => {
     if (!isMatch)
       return res.status(401).send({ error: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     res.send({
       token,
@@ -237,7 +237,7 @@ app.post('/api/reset-password', async (req, res) => {
 // Get Courses Taught by Tutor
 // =======================
 app.get('/api/courses', authenticateToken, async (req, res) => {
-  const { tutor_email } = req.query;
+  const tutor_email = req.user.email; // Get the tutor's email from the decoded JWT
 
   if (!tutor_email) return res.status(400).send({ error: 'Tutor email is required' });
 
@@ -255,6 +255,31 @@ app.get('/api/courses', authenticateToken, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: 'Error fetching courses' });
+  }
+});
+
+// =======================
+// Get Sessions for User
+// =======================
+app.get('/api/sessions', authenticateToken, async (req, res) => {
+  const user_email = req.user.email;
+
+  if (!user_email) return res.status(400).send({ error: 'User email is required' });
+
+  try {
+    const result = await pool.query(
+      'SELECT * FROM sessions WHERE user_email = $1',
+      [user_email]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).send({ error: 'No sessions found for this user' });
+    }
+
+    res.send(result.rows);  // Returning the user's sessions
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'Error fetching sessions' });
   }
 });
 

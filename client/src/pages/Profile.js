@@ -17,28 +17,47 @@ const Profile = ({ user }) => {
     }
   }, [user, navigate]);
 
-  // Fetch tutor's courses if user is a tutor
+  // Fetch tutor's courses if user is a tutor and user object is available
   useEffect(() => {
-    if (!user) return;
-    if (user.is_tutor) {
-      axios.get(`/api/courses?tutor_email=${user.email}`)
+    if (user && user.is_tutor) {
+      setLoadingCourses(true);  // Set loading state to true before making API call
+      const token = localStorage.getItem('token');  // Get the JWT token from storage
+
+      axios.get(`/api/courses`, {
+        headers: {
+          'Authorization': `Bearer ${token}`  // Send the token in the Authorization header
+        }
+      })
         .then(res => setCourses(res.data))
-        .catch(err => console.error('Error fetching courses:', err))
-        .finally(() => setLoadingCourses(false));
-    } else {
-      setLoadingCourses(false);
+        .catch(err => {
+          console.error('Error fetching courses:', err);
+          setLoadingCourses(false);
+        })
+        .finally(() => setLoadingCourses(false));  // Set loading to false after API call completes
     }
   }, [user]);
 
   // Fetch user's upcoming sessions
   useEffect(() => {
     if (!user) return;
-    axios.get(`/api/sessions?user_email=${user.email}`)
+
+    setLoadingSessions(true); // Set loading state to true before making API call
+    const token = localStorage.getItem('token');  // Get the JWT token from storage
+
+    axios.get(`/api/sessions?user_email=${user.email}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`  // Send the token in the Authorization header
+      }
+    })
       .then(res => setSessions(res.data))
-      .catch(err => console.error('Error fetching sessions:', err))
-      .finally(() => setLoadingSessions(false));
+      .catch(err => {
+        console.error('Error fetching sessions:', err);
+        setLoadingSessions(false);
+      })
+      .finally(() => setLoadingSessions(false));  // Set loading to false after API call completes
   }, [user]);
 
+  // Ensure the profile is rendered correctly if `user` is not available
   if (!user) {
     return (
       <div className="profile-page" style={{ padding: '2rem' }}>
