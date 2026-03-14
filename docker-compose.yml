@@ -3,12 +3,15 @@ services:
     build:
       context: ./server
     container_name: server_container
+    env_file:
+      - ./server/.env
     ports:
       - "9000:9000"
     networks:
       - tutoria_network
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
 
   client:
     build:
@@ -31,13 +34,16 @@ services:
     networks:
       - tutoria_network
     volumes:
-      # REQUIRED for Postgres 18+
       - pgdata:/var/lib/postgresql
-      # Runs setup.sql on first launch
-      - ./server/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 networks:
   tutoria_network:
 
 volumes:
   pgdata:
+    name: tutoria_pgdata
