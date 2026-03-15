@@ -1,95 +1,166 @@
+/* ============================================================
+   header.css
+   ============================================================ */
+
 .header {
-  overflow: hidden;
-  background-color: #f1f1f1;
+  height: var(--header-height, 64px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  background: var(--bg, #ffffff);
+  border-bottom: 1px solid var(--border, #e5e5e5);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.header a {
-  float: left;
-  display: block;
-  color: black;
-  text-align: center;
-  padding: 14px 16px;
+/* ── Left side ── */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.header-logo {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
   text-decoration: none;
-  font-size: 17px;
 }
 
-.header a.logoName {
-  font-size: 25px;
-  font-weight: bold;
-  text-decoration: none;
-  padding-left: 0;
-  color: #887628;
-}
-
-.header a.headerItem {
-  font-size: 20px;
-  text-decoration: none;
-  padding: 20px 17px;
-}
-
-.header a.headerItem:hover {
-  background-color: #ddd;
-}
-
-.header a.active {
-  color: white;
-}
-
-.header .header-left {
-  float: left;
-}
-
-.header .header-right {
-  float: right;
-}
-
-.header .header-right button {
-  float: right;
-  padding: 6px;
-  margin-top: 16px;
-  margin-right: 16px;
-  background: #ddd;
-  font-size: 17px;
-  border: none;
-  cursor: pointer;
-}
-
-.header .header-right button:hover {
-  background: #ccc;
-}
-
-.header-right a {
-  padding: 6px;
-  margin-top: 10px;
-  margin-right: 16px;
-  border: none;
-  cursor: pointer;
-  background-color: none;
-}
-
-.logo {
-  padding-right: 5;
-}
-
-.logoImage {
-  height: 40px;
+.header-logo-img {
+  height: 38px;
   width: auto;
 }
 
-.defaultPictureIcon {
+.header-brand {
+  font-size: 1.3rem;
+  font-family: "Gowun Batang", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--gold, #9B8835);
+  text-decoration: none;
+  padding: 0 0.75rem 0 0.25rem;
+  letter-spacing: 0.02em;
+  margin-right: 0.5rem;
+}
+
+.header-brand:hover {
+  color: var(--gold-hover, #7d6e28);
+}
+
+/* ── Nav links ── */
+.header-nav {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.header-nav-item {
+  font-size: 0.95rem;
+  font-family: "Gowun Batang", serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--text-muted, #666);
+  text-decoration: none;
+  padding: 0 0.85rem;
+  display: flex;
+  align-items: center;
+  height: var(--header-height, 64px);
+  transition: background 0.15s, color 0.15s;
+}
+
+.header-nav-item:hover {
+  background: var(--bg-subtle, #f5f5f5);
+  color: var(--text, #1a1a1a);
+}
+
+.header-nav-item.active {
+  color: var(--gold, #9B8835);
+  font-weight: 600;
+}
+
+/* ── Right side ── */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* ── Icon links (messages, notifications) ── */
+.header-icon-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background 0.15s;
+  text-decoration: none;
+}
+
+.header-icon-link:hover {
+  background: var(--bg-subtle, #f5f5f5);
+}
+
+.header-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+/* ── Avatar ── */
+.header-avatar-link {
+  display: flex;
+  align-items: center;
+  margin-left: 0.25rem;
+}
+
+.header-avatar {
   width: 34px;
   height: 34px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid var(--border-dark, #ccc);
+  transition: border-color 0.2s;
 }
 
-@media screen and (max-width: 500px) {
-  .header a {
-    float: none;
-    display: block;
-    text-align: left;
+.header-avatar:hover {
+  border-color: var(--gold, #9B8835);
+}
+
+/* ── Login / Logout button ── */
+.header-login-btn {
+  padding: 0.4rem 1.1rem;
+  font-size: 0.9rem;
+  font-family: 'Gowun Batang', serif;
+  background: var(--bg, #fff);
+  color: var(--gold, #9B8835);
+  border: 1.5px solid var(--gold, #9B8835);
+  border-radius: var(--radius-sm, 6px);
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+
+.header-login-btn:hover {
+  background: var(--gold, #9B8835);
+  color: white;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .header {
+    padding: 0 1rem;
   }
-  .header-right {
-    float: none;
+
+  .header-brand {
+    display: none;
+  }
+
+  .header-nav-item {
+    font-size: 0.85rem;
+    padding: 0.4rem 0.6rem;
   }
 }

@@ -13,6 +13,10 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [checkingAuth, setCheckingAuth] = useState(true);
 
+  // Lifted auth popup state so any page can trigger it
+  const [showAuth, setShowAuth] = useState(false);
+  const [authView, setAuthView] = useState('login'); // 'login' | 'signup'
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -29,25 +33,41 @@ const App = () => {
     }
   }, []);
 
-  if (checkingAuth) {
-    return null;
-  }
+  if (checkingAuth) return null;
+
+  const openLogin = () => { setAuthView('login'); setShowAuth(true); };
+  const openSignup = () => { setAuthView('signup'); setShowAuth(true); };
 
   return (
     <Router>
-      <Header user={user} setUser={setUser} />
-      <div>
+      <Header
+        user={user}
+        setUser={setUser}
+        showAuth={showAuth}
+        setShowAuth={setShowAuth}
+        authView={authView}
+        setAuthView={setAuthView}
+      />
+      <div className="page-wrapper">
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={<FindATutor />} />
           <Route path="/find-a-tutor" element={<FindATutor />} />
-          <Route path="/become-a-tutor" element={<BecomeATutor />} />
-          {/* Protected Route */}
+          <Route
+            path="/become-a-tutor"
+            element={
+              <BecomeATutor
+                user={user}
+                setUser={setUser}
+                onShowLogin={openLogin}
+                onShowSignup={openSignup}
+              />
+            }
+          />
           <Route
             path="/profile"
             element={
               <PrivateRoute user={user} checkingAuth={checkingAuth}>
-                <Profile user={user} />
+                <Profile user={user} setUser={setUser} />
               </PrivateRoute>
             }
           />

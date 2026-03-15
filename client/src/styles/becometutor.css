@@ -1,0 +1,1456 @@
+/* ============================================================
+   becometutor.css
+   Covers: BecomeATutor page, BecomeTutorForm wizard,
+           TutorDashboard, Availability Grid, Blackout Dates,
+           Session Settings, Session Cards
+   ============================================================ */
+
+/* ─────────────────────────────────────────────────────────────
+   PAGE WRAPPER
+   ───────────────────────────────────────────────────────────── */
+
+.bat-page {
+  min-height: calc(100vh - var(--header-height));
+  background: var(--bg);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HERO
+   ───────────────────────────────────────────────────────────── */
+
+.bat-hero {
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2010 50%, #1a1a1a 100%);
+  color: white;
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+}
+
+.bat-hero--form {
+  padding: 2.5rem 2rem 2rem;
+}
+
+.bat-hero-title {
+  font-size: 2.5rem;
+  font-weight: 400;
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+.bat-hero-sub {
+  font-size: 1.1rem;
+  opacity: 0.8;
+  margin: 0 0 2rem;
+}
+
+.bat-hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.bat-hero-btn {
+  padding: 0.75rem 2rem;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-family: 'Gowun Batang', serif;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 2px solid transparent;
+}
+
+.bat-hero-btn--primary {
+  background: var(--gold);
+  color: white;
+  border-color: var(--gold);
+}
+
+.bat-hero-btn--primary:hover {
+  background: var(--gold-hover);
+  border-color: var(--gold-hover);
+}
+
+.bat-hero-btn--secondary {
+  background: transparent;
+  color: white;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.bat-hero-btn--secondary:hover {
+  border-color: white;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   PERKS (logged-out marketing)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-perks {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 3rem 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bat-perk {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  min-width: 180px;
+  max-width: 200px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bat-perk-icon {
+  font-size: 1.75rem;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.bat-perk strong {
+  font-size: 0.95rem;
+  color: var(--text);
+  display: block;
+}
+
+.bat-perk p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   WIZARD FORM WRAPPER + STEP PROGRESS
+   ───────────────────────────────────────────────────────────── */
+
+.bat-form-wrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.bat-steps {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+}
+
+.bat-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1;
+  position: relative;
+  font-size: 0.8rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.bat-step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 60%;
+  width: 80%;
+  height: 2px;
+  background: var(--border);
+  z-index: 0;
+}
+
+.bat-step.done:not(:last-child)::after {
+  background: var(--gold);
+}
+
+.bat-step-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-subtle);
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.85rem;
+  z-index: 1;
+  transition: all 0.2s;
+  border: 2px solid var(--border);
+}
+
+.bat-step.active .bat-step-circle,
+.bat-step.done .bat-step-circle {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: white;
+}
+
+.bat-step.active,
+.bat-step.done {
+  color: var(--gold);
+}
+
+.bat-step-content h2 {
+  font-size: 1.4rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.bat-subtitle {
+  color: var(--text-muted);
+  margin: 0 0 1.5rem;
+  font-size: 0.9rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   INPUTS
+   ───────────────────────────────────────────────────────────── */
+
+.bat-input {
+  flex: 1;
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: 'Gowun Batang', serif;
+  transition: border-color 0.2s;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.bat-input:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+
+.bat-select {
+  padding: 0.6rem 0.85rem;
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: 'Gowun Batang', serif;
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.bat-input-row {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.bat-to {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BUTTONS
+   ───────────────────────────────────────────────────────────── */
+
+.bat-btn-primary {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background: var(--gold);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: background 0.2s;
+}
+
+.bat-btn-primary:hover:not(:disabled) { background: var(--gold-hover); }
+
+.bat-btn-confirm {
+  padding: 0.75rem 2rem;
+  background: var(--gold);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.bat-btn-confirm:hover:not(:disabled) { background: var(--gold-hover); }
+
+.bat-btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background: var(--bg);
+  color: var(--gold);
+  border: 1.5px solid var(--gold);
+  border-radius: var(--radius-md);
+  font-size: 0.95rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.bat-btn-secondary:hover { background: var(--gold-light); }
+
+.bat-btn-add {
+  padding: 0.6rem 1.1rem;
+  background: var(--gold);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.bat-btn-add:hover { background: var(--gold-hover); }
+
+.bat-btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+  color: var(--text-light);
+}
+
+.bat-btn-delete:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.bat-btn-link {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  transition: color 0.15s;
+}
+
+.bat-btn-link:hover { color: var(--gold); }
+
+.bat-btn-row {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+/* Small button modifier (dashboard use) */
+.bat-btn-sm {
+  padding: 0.35rem 0.85rem !important;
+  font-size: 0.8rem !important;
+}
+
+/* Shared disabled state */
+.bat-btn-primary:disabled,
+.bat-btn-confirm:disabled,
+.bat-btn-add:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   TAGS
+   ───────────────────────────────────────────────────────────── */
+
+.bat-tag-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bat-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-hover);
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+}
+
+.bat-tag-remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--gold-border);
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.bat-tag-remove:hover { color: #dc2626; }
+
+/* ─────────────────────────────────────────────────────────────
+   SLOT LIST (wizard step 2 review)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-slot-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.bat-slot-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  padding: 0.5rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  color: var(--text);
+}
+
+.bat-slot-day {
+  font-weight: 600;
+  color: var(--gold-hover);
+  min-width: 90px;
+}
+
+.bat-slot-tz {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   REVIEW SECTIONS (step 4 confirm)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-review-section {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.bat-review-section h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.75rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RATE UI
+   ───────────────────────────────────────────────────────────── */
+
+.bat-rate-defaults {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.bat-rate-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin: 0 0 0.75rem;
+  display: block;
+}
+
+.bat-rate-type-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.bat-rate-type-btn {
+  padding: 0.4rem 1rem;
+  border: 1.5px solid var(--border-dark);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bat-rate-type-btn:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.bat-rate-type-btn.active {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: white;
+}
+
+.bat-rate-type-btn--sm {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.bat-rate-inputs {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.bat-rate-field {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--bg);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.1rem 0.5rem;
+  transition: border-color 0.2s;
+}
+
+.bat-rate-field:focus-within { border-color: var(--gold); }
+
+.bat-rate-prefix,
+.bat-rate-suffix {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.bat-rate-suffix {
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.bat-rate-input {
+  width: 80px;
+  border: none !important;
+  padding: 0.5rem 0.25rem !important;
+  font-size: 0.9rem;
+  font-family: 'Gowun Batang', serif;
+}
+
+.bat-rate-input:focus { outline: none; }
+
+/* ─────────────────────────────────────────────────────────────
+   COURSE LIST (wizard + dashboard)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-course-form-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.bat-course-form-item {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+}
+
+.bat-course-form-item--review {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bat-course-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.bat-course-form-name {
+  font-weight: 600;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.bat-course-form-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bat-course-rate-display {
+  font-size: 0.8rem;
+  color: var(--gold-hover);
+  font-weight: 600;
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+}
+
+.bat-course-rate-edit {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HINTS + ERRORS + LOADING
+   ───────────────────────────────────────────────────────────── */
+
+.bat-hint {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin: -0.5rem 0 1rem;
+}
+
+.bat-hint--warning {
+  color: #92400e;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  margin-top: 0.6rem;
+  margin-bottom: 0;
+}
+
+.bat-error {
+  color: #dc2626;
+  font-size: 0.875rem;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.bat-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   DASHBOARD LAYOUT
+   ───────────────────────────────────────────────────────────── */
+
+.bat-dashboard {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.bat-dashboard-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.bat-dashboard-header h1 {
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.bat-dashboard-header p {
+  color: var(--text-muted);
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+/* ── Stats row ── */
+.bat-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.bat-stat-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.bat-stat-number {
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: var(--gold);
+}
+
+.bat-stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.bat-stat-card--alert {
+  border-color: var(--gold-border);
+  background: var(--gold-light);
+}
+
+.bat-stat-card--alert .bat-stat-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.bat-stat-alert-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: bat-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes bat-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);   }
+  50%       { opacity: 0.5; transform: scale(1.3); }
+}
+
+/* ── Sections ── */
+.bat-section {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.bat-section h2 {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.bat-section--alert {
+  border-color: var(--gold-border);
+  background: linear-gradient(to bottom, #fffdf5, var(--bg));
+}
+
+.bat-section-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.bat-section-title-row h2 {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.bat-empty {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 0 0 1rem;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   COURSE CARDS (dashboard)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-course-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.bat-course-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.875rem 1rem;
+}
+
+.bat-course-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.bat-course-info h4 {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 0.25rem;
+}
+
+.bat-course-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.bat-course-rating {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.bat-course-rate-badge {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--gold-hover);
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+}
+
+.bat-course-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.bat-inline-rate-editor {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+
+.bat-inline-rate-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  justify-content: flex-end;
+}
+
+.bat-add-row { display: flex; gap: 0.75rem; }
+
+.bat-add-course-form {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AVAILABILITY — READ VIEW (dashboard)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-avail-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.bat-avail-day {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  min-width: 140px;
+}
+
+.bat-avail-day-name {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold);
+  margin: 0 0 0.5rem;
+}
+
+.bat-avail-slot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  padding: 0.2rem 0;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   AVAILABILITY — WEEKLY GRID EDITOR
+   ───────────────────────────────────────────────────────────── */
+
+.bat-avail-tz-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.bat-avail-tz-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bat-avail-grid-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.bat-avail-week-grid {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.bat-avail-time-col { width: 54px; }
+
+.bat-avail-week-grid thead th {
+  background: var(--bg-subtle, #f9f7f2);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+
+.bat-avail-day-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0.45rem 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.bat-avail-clear-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.7rem;
+  color: var(--gold-hover);
+  line-height: 1;
+  padding: 0;
+  transition: background 0.15s, color 0.15s;
+}
+
+.bat-avail-clear-btn:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+.bat-avail-time-label {
+  font-size: 0.68rem;
+  color: var(--text-light);
+  text-align: right;
+  padding: 0 6px 0 4px;
+  white-space: nowrap;
+  vertical-align: middle;
+  border-right: 1px solid var(--border);
+  background: var(--bg-subtle, #f9f7f2);
+}
+
+.bat-avail-cell {
+  height: 26px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  background: var(--bg);
+  transition: background 0.07s;
+}
+
+.bat-avail-cell:hover           { background: var(--gold-light); }
+.bat-avail-cell.selected        { background: var(--gold);       border-color: var(--gold);       }
+.bat-avail-cell.selected:hover  { background: var(--gold-hover); border-color: var(--gold-hover); }
+
+.bat-avail-midnight-sep td {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--text-light);
+  letter-spacing: 0.04em;
+  padding: 3px 0;
+  background: var(--bg-subtle, #f9f7f2);
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+}
+
+.bat-avail-legend {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+.bat-avail-legend-swatch {
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  flex-shrink: 0;
+}
+
+.bat-avail-legend-swatch.selected {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.bat-avail-cell-count {
+  margin-left: auto;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BLACKOUT DATES
+   ───────────────────────────────────────────────────────────── */
+
+.bat-blackout-section {
+  border-top: 1px dashed var(--border);
+  padding-top: 1.25rem;
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.bat-blackout-title {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.bat-blackout-optional {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-light);
+  background: var(--bg-subtle, #f5f5f0);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+
+.bat-blackout-input-row {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.bat-blackout-input-row .bat-input {
+  flex: 1;
+  min-width: 120px;
+}
+
+.bat-blackout-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.bat-blackout-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+}
+
+.bat-blackout-date {
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.bat-blackout-reason {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bat-blackout-item .bat-tag-remove { margin-left: auto; flex-shrink: 0; }
+
+/* ─────────────────────────────────────────────────────────────
+   SESSION SETTINGS (wizard step 3 + dashboard editor)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-settings-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.bat-settings-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.9rem;
+}
+
+.bat-settings-icon {
+  font-size: 1.2rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.bat-settings-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0 0 0.15rem;
+}
+
+.bat-settings-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.bat-settings-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.bat-settings-editor { margin-top: 0.25rem; }
+
+.bat-pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bat-duration-range-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0.85rem;
+  flex-wrap: wrap;
+}
+
+.bat-duration-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 100px;
+}
+
+.bat-duration-to {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  padding-bottom: 0.55rem;
+  flex-shrink: 0;
+}
+
+.bat-duration-preview {
+  background: var(--bg);
+  border: 1px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: 0.65rem 0.85rem;
+}
+
+.bat-duration-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.bat-duration-chip {
+  background: var(--gold-light);
+  border: 1px solid var(--gold-border);
+  color: var(--gold-hover);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+}
+
+/* Toggle switch */
+.bat-toggle {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--border-dark);
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s;
+  padding: 0;
+  margin-top: 0.15rem;
+}
+
+.bat-toggle.active { background: var(--gold); }
+
+.bat-toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  transition: transform 0.2s;
+  display: block;
+}
+
+.bat-toggle.active .bat-toggle-thumb { transform: translateX(20px); }
+
+/* Settings review list */
+.bat-review-settings-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bat-review-settings-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.875rem;
+  gap: 1rem;
+}
+
+.bat-review-settings-list li:last-child { border-bottom: none; }
+
+.bat-review-settings-key {
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.bat-review-settings-val {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+}
+
+.bat-review-settings-val--on { color: var(--gold-hover); }
+
+/* ─────────────────────────────────────────────────────────────
+   SESSION CARDS (dashboard)
+   ───────────────────────────────────────────────────────────── */
+
+.bat-pending-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: var(--gold);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.bat-session-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-bottom: 0.25rem;
+}
+
+.bat-session-card {
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: border-color 0.15s;
+}
+
+.bat-session-card--pending {
+  border-color: var(--gold-border);
+  border-left: 3px solid var(--gold);
+  background: #fffdf7;
+}
+
+.bat-session-card-body {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.85rem 1rem;
+  flex-wrap: wrap;
+}
+
+.bat-session-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.bat-session-course {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bat-session-student,
+.bat-session-time {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.bat-session-meta {
+  font-size: 0.82rem;
+  color: var(--text-light);
+}
+
+.bat-session-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.bat-session-status {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+}
+
+.bat-session-status--confirmed {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.bat-btn-confirm-sm {
+  padding: 0.4rem 0.9rem;
+  background: var(--gold);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.bat-btn-confirm-sm:hover { background: var(--gold-hover); }
+
+.bat-btn-decline-sm {
+  padding: 0.4rem 0.9rem;
+  background: var(--bg);
+  color: var(--text-muted);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-family: 'Gowun Batang', serif;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+
+.bat-btn-decline-sm:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE
+   ───────────────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .bat-hero-title                          { font-size: 1.75rem; }
+  .bat-stats-row                           { grid-template-columns: repeat(2, 1fr); }
+  .bat-perks                               { flex-direction: column; align-items: center; }
+  .bat-hero-actions                        { flex-direction: column; align-items: center; }
+  .bat-steps span                          { display: none; }
+}
+
+@media (max-width: 560px) {
+  .bat-session-card-body                   { flex-direction: column; align-items: flex-start; }
+  .bat-session-actions                     { width: 100%; justify-content: flex-end; }
+  .bat-section-title-row                   { flex-wrap: wrap; gap: 0.5rem; }
+}
+
+@media (max-width: 480px) {
+  .bat-duration-range-row                  { flex-direction: column; }
+  .bat-duration-to                         { display: none; }
+}
