@@ -1,6 +1,6 @@
 import '../styles/profile.css';
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from '../api/axios';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ user }) => {
@@ -13,51 +13,38 @@ const Profile = ({ user }) => {
   // Redirect if not logged in
   useEffect(() => {
     if (!user) {
-      navigate('/'); // Redirect to home if not logged in
+      navigate('/');
     }
   }, [user, navigate]);
 
-  // Fetch tutor's courses if user is a tutor and user object is available
+  // Fetch tutor's courses if user is a tutor
   useEffect(() => {
-    if (user && user.is_tutor) {
-      setLoadingCourses(true);  // Set loading state to true before making API call
-      const token = localStorage.getItem('token');  // Get the JWT token from storage
+    if (!user?.is_tutor) return;
 
-      axios.get(`/api/courses`, {
-        headers: {
-          'Authorization': `Bearer ${token}`  // Send the token in the Authorization header
-        }
-      })
-        .then(res => setCourses(res.data))
-        .catch(err => {
-          console.error('Error fetching courses:', err);
-          setLoadingCourses(false);
-        })
-        .finally(() => setLoadingCourses(false));  // Set loading to false after API call completes
-    }
+    setLoadingCourses(true);
+    api.get('/courses')
+      .then(res => setCourses(res.data))
+      .catch(err => console.error('Error fetching courses:', err))
+      .finally(() => setLoadingCourses(false));
   }, [user]);
 
-  // Fetch user's upcoming sessions
+  // Fetch user's sessions
   useEffect(() => {
     if (!user) return;
 
-    setLoadingSessions(true); // Set loading state to true before making API call
-    const token = localStorage.getItem('token');  // Get the JWT token from storage
-
-    axios.get(`/api/sessions?user_email=${user.email}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`  // Send the token in the Authorization header
-      }
-    })
+    setLoadingSessions(true);
+    api.get('/sessions')
       .then(res => setSessions(res.data))
       .catch(err => {
-        console.error('Error fetching sessions:', err);
-        setLoadingSessions(false);
+        // 404 just means no sessions yet — not a real error
+        if (err.response?.status !== 404) {
+          console.error('Error fetching sessions:', err);
+        }
+        setSessions([]);
       })
-      .finally(() => setLoadingSessions(false));  // Set loading to false after API call completes
+      .finally(() => setLoadingSessions(false));
   }, [user]);
 
-  // Ensure the profile is rendered correctly if `user` is not available
   if (!user) {
     return (
       <div className="profile-page" style={{ padding: '2rem' }}>
@@ -80,11 +67,8 @@ const Profile = ({ user }) => {
           <a href="#" className="update-profile-link">Update Profile</a>
         </div>
 
-        {/* Always show the Student button */}
         <div className="role-buttons">
           <button className={`role-button ${!user.is_tutor ? 'active' : ''}`}>Student</button>
-
-          {/* Show the Tutor button only if the user is a tutor */}
           {user.is_tutor && (
             <button className={`role-button ${user.is_tutor ? 'active' : ''}`}>Tutor</button>
           )}
@@ -92,6 +76,8 @@ const Profile = ({ user }) => {
       </div>
 
       <div className="profile-content-right">
+
+        {/* Upcoming Sessions */}
         <div className="profile-section">
           <h2>Upcoming Sessions</h2>
           {loadingSessions ? (
@@ -114,7 +100,7 @@ const Profile = ({ user }) => {
           )}
         </div>
 
-        {/* Show Courses Taught only if the user is a tutor */}
+        {/* Courses Taught — tutors only */}
         {user.is_tutor && (
           <div className="profile-section">
             <h2>Courses Taught</h2>
@@ -144,13 +130,14 @@ const Profile = ({ user }) => {
           </div>
         )}
 
-        {/* Show Availability section only if user is a tutor */}
+        {/* Availability — tutors only */}
         {user.is_tutor && (
           <div className="profile-section">
             <h2>Availability</h2>
             <p>Your availability calendar will be displayed here.</p>
           </div>
         )}
+
       </div>
     </div>
   );

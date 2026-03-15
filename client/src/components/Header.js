@@ -1,7 +1,7 @@
 import '../styles/header.css';
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import Authentication from './Authentication';
+import Authentication from './auth/Authentication';
 
 const Header = ({ user, setUser }) => {
     const [showAuth, setShowAuth] = useState(false);
@@ -11,7 +11,7 @@ const Header = ({ user, setUser }) => {
     const handleLogout = () => {
         localStorage.removeItem('token');
         setUser(null);
-        navigate('/'); 
+        navigate('/');
     };
 
     return (
@@ -19,12 +19,11 @@ const Header = ({ user, setUser }) => {
             <div className="header">
                 <div className="header-left">
                     <Link to="/" className="logo">
-                        <img className="logoImage" src="/LogoVersions/Logo.png" alt="Tutoria Logo"/>
+                        <img className="logoImage" src="/LogoVersions/Logo.png" alt="Tutoria Logo" />
                     </Link>
                     <Link to="/" className="logoName">Tutoria</Link>
                     <Link to="/find-a-tutor" className="headerItem">Find a Tutor</Link>
                     <Link to="/become-a-tutor" className="headerItem">Become a Tutor</Link>
-
                 </div>
 
                 <div className="header-right">
@@ -33,16 +32,16 @@ const Header = ({ user, setUser }) => {
                     ) : (
                         <>
                             <Link to="/messages" className="messages">
-                                <img className="messagesIcon" src="/Icons/Messages.png" alt="Messages"/>
+                                <img className="messagesIcon" src="/Icons/Messages.png" alt="Messages" />
                             </Link>
                             <Link to="/notifications" className="notifications">
-                                <img className="notificationsIcon" src="/Icons/Notifications.png" alt="Notifications"/>
+                                <img className="notificationsIcon" src="/Icons/Notifications.png" alt="Notifications" />
                             </Link>
                             {location.pathname === '/profile' ? (
                                 <button title="Logout" onClick={handleLogout}>Logout</button>
                             ) : (
                                 <Link to="/profile" className="defaultPicture">
-                                    <img className="defaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture"/>
+                                    <img className="defaultPictureIcon" src="/Icons/Default_Profile_Picture.png" alt="DefaultPicture" />
                                 </Link>
                             )}
                         </>
