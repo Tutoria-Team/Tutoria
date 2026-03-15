@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const OtpVerification = ({ email: initialEmail = '', mobile_number: initialMobile = '', onSuccess }) => {
     const [email, setEmail] = useState(initialEmail);
@@ -9,9 +9,9 @@ const OtpVerification = ({ email: initialEmail = '', mobile_number: initialMobil
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/api/validate-otp', { email, mobile_number, otp });
+            await api.post('/auth/validate-otp', { email, mobile_number, otp });
             alert('OTP validated successfully!');
-            onSuccess(); // switch to login form in popup
+            onSuccess();
         } catch (error) {
             alert(error.response?.data?.error || 'Error validating OTP');
         }

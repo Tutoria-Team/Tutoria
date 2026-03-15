@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const Login = ({ setUser, setShowAuth, prefillEmail = '' }) => {
     const [emailOrMobile, setEmailOrMobile] = useState(prefillEmail);
@@ -12,7 +12,7 @@ const Login = ({ setUser, setShowAuth, prefillEmail = '' }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('/api/login', {
+            const response = await api.post('/auth/login', {
                 emailOrMobile,
                 password
             });
@@ -22,7 +22,7 @@ const Login = ({ setUser, setShowAuth, prefillEmail = '' }) => {
             setUser(userData);
             setShowAuth(false);
         } catch (error) {
-            alert('Error during login');
+            alert(error.response?.data?.error || 'Error during login');
             console.error(error);
         }
     };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const ForgotPassword = ({ setView }) => {
   const [email, setEmail] = useState('');
@@ -10,7 +10,7 @@ const ForgotPassword = ({ setView }) => {
   const requestOtp = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/request-password-reset', { email });
+      await api.post('/auth/request-password-reset', { email });
       setStep(2);
       alert('OTP sent to your email');
     } catch (err) {
@@ -21,9 +21,9 @@ const ForgotPassword = ({ setView }) => {
   const resetPassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/reset-password', { email, otp, newPassword });
+      await api.post('/auth/reset-password', { email, otp, newPassword });
       alert('Password reset successful!');
-      setView('login'); // return to login form in popup
+      setView('login');
     } catch (err) {
       alert(err.response?.data?.error || 'Error resetting password');
     }

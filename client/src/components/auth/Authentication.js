@@ -1,4 +1,4 @@
-import '../styles/auth.css';
+import '../../styles/auth.css';
 import React, { useState } from 'react';
 import Signup from './Signup';
 import OtpVerification from './OtpVerification';
@@ -65,7 +65,11 @@ const Authentication = ({ setShowAuth, setUser }) => {
           )}
 
           {view === 'otp' && (
-            <OtpVerification email={signupData.email} mobile_number={signupData.mobile_number} onSuccess={() => setView('login')} />
+            <OtpVerification
+              email={signupData.email}
+              mobile_number={signupData.mobile_number}
+              onSuccess={() => setView('login')}
+            />
           )}
 
           {view === 'forgot' && <ForgotPassword setView={setView} />}

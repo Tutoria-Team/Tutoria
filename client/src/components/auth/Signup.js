@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const Signup = ({ onSuccess }) => {
     const [first_name, setFirstName] = useState('');
@@ -11,15 +11,16 @@ const Signup = ({ onSuccess }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('/api/signup', { first_name, last_name, email, mobile_number, password });
+            await api.post('/auth/signup', {
+                first_name, last_name, email, mobile_number, password
+            });
             alert('Signup successful! Check your email for the OTP.');
-            
             if (onSuccess) {
                 onSuccess({ email, mobile_number });
             }
         } catch (error) {
+            alert(error.response?.data?.error || 'Error during signup');
             console.error(error);
-            alert('Error during signup');
         }
     };
 
@@ -30,7 +31,7 @@ const Signup = ({ onSuccess }) => {
                 <input type="text" placeholder="Last Name" value={last_name} onChange={(e) => setLastName(e.target.value)} required />
             </div>
             <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} required />
+            <input type="text" placeholder="Mobile Number" value={mobile_number} onChange={(e) => setMobileNumber(e.target.value)} />
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             <button type="submit">Sign Up</button>
         </form>
