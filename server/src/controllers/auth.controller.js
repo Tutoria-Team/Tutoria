@@ -89,6 +89,7 @@ const login = async (req, res, next) => {
         first_name: user.first_name,
         last_name: user.last_name,
         email: user.email,
+        mobile_number: user.mobile_number,
         profile_photo_url: user.profile_photo_url,
         is_tutor: user.is_tutor,
       },

@@ -39,6 +39,7 @@ app.use('/api/users/me',     usersRoutes);
 app.use('/api/courses',      coursesRoutes);
 app.use('/api/sessions',     sessionsRoutes);
 app.use('/api/availability', availabilityRoutes);
+app.use('/api/tutor-settings', require('./routes/tutorSessionSettings.routes'));
 
 // =======================
 // Error Handling (must be last)
