@@ -102,4 +102,46 @@ const deleteCourse = async (req, res, next) => {
   }
 };
 
-module.exports = { getCourses, createCourse, updateCourse, deleteCourse };
+// GET /api/courses/all-tutor-courses
+const getAllTutorCourses = async (req, res, next) => {
+  try {
+    const query = `
+      SELECT 
+        tc.tcid, 
+        tc.course_name, 
+        (SELECT ROUND(AVG(user_rating), 1) FROM reviews r WHERE r.tcid = tc.tcid) AS overall_rating,
+        tc.hourly_rate,
+        tc.session_rate,
+        u.first_name, 
+        u.last_name,
+        u.profile_photo_url,
+        COALESCE(
+          (SELECT json_agg(json_build_object(
+            'session_id', s.session_id, 
+            'session_timestamp', s.session_timestamp, 
+            'cost', s.cost
+          ))
+          FROM sessions s 
+          WHERE s.tcid = tc.tcid AND s.user_email IS NULL), '[]'::json
+        ) as sessions,
+        COALESCE(
+          (SELECT json_agg(json_build_object(
+            'review_id', r.review_id, 
+            'user_rating', r.user_rating, 
+            'user_comment', r.user_comment
+          ))
+          FROM reviews r 
+          WHERE r.tcid = tc.tcid), '[]'::json
+        ) as reviews
+      FROM tutor_courses tc
+      JOIN users u ON tc.tutor_email = u.email;
+    `;
+    
+    const result = await pool.query(query);
+    res.json(result.rows);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getCourses, createCourse, updateCourse, deleteCourse, getAllTutorCourses };

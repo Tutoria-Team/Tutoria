@@ -20,16 +20,51 @@ const createTutorCoursesTable = async () => {
       UNIQUE (tutor_email, course_name)
     );
   `);
-  console.log('✔ tutor_courses table ready');
+  
+  console.log('✔ tutor_courses tables ready');
 };
 
 const seedTutorCourses = async () => {
+  // 1. Make sure Alice exists
   await pool.query(`
-    INSERT INTO tutor_courses (tutor_email, course_name, rate_type, hourly_rate)
-    VALUES ('tutor.alice@example.com', 'Introduction to PERN Stack', 'hourly', 50.00)
+    INSERT INTO users (first_name, last_name, email, mobile_number, password_hash, is_tutor)
+    VALUES ('Alice', 'Smith', 'tutor.alice@example.com', '555-0100', 'fake_password_hash', true)
+    ON CONFLICT (email) DO NOTHING;
+  `);
+
+  // 2. Add courses with all 3 pricing scenarios
+  await pool.query(`
+    INSERT INTO tutor_courses (tutor_email, course_name, rate_type, hourly_rate, session_rate)
+    VALUES 
+      -- Scenario 1: Hourly Only (session_rate is NULL)
+      ('tutor.alice@example.com', 'Introduction to Web Development', 'hourly', 45.00, NULL),
+      
+      -- Scenario 2: Session Only (hourly_rate is NULL)
+      ('tutor.alice@example.com', 'College Essay Review', 'session', NULL, 150.00),
+      
+      -- Scenario 3: Both Rates Provided
+      ('tutor.alice@example.com', 'Intensive SAT Prep Bootcamp', 'both', 60.00, 450.00)
+      
     ON CONFLICT (tutor_email, course_name) DO NOTHING;
   `);
-  console.log('✔ tutor_courses seeded');
+
+  // 3. Add dummy sessions for Alice's courses into the EXISTING sessions table
+  // We set user_email to NULL so your controller recognizes them as available!
+  await pool.query(`
+    INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
+    SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '1 day' + INTERVAL '2 hours', 45.00, NULL
+    FROM tutor_courses WHERE course_name = 'Introduction to Web Development';
+    
+    INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
+    SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '3 days', 45.00, NULL
+    FROM tutor_courses WHERE course_name = 'Introduction to Web Development';
+    
+    INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
+    SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '5 days', 150.00, NULL
+    FROM tutor_courses WHERE course_name = 'College Essay Review';
+  `);
+  
+  console.log('✔ dummy tutor, courses, and sessions seeded');
 };
 
 module.exports = { createTutorCoursesTable, seedTutorCourses };
