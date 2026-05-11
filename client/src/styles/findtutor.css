@@ -4,9 +4,8 @@
    ============================================================ */
 
 /* ─────────────────────────────────────────────────────────────
-   PAGE TITLE BAR
+   PAGE LAYOUT & HEADERS
    ───────────────────────────────────────────────────────────── */
-
 .title-container {
   background: var(--bg);
   padding: 1.25rem 2rem;
@@ -19,15 +18,6 @@
   margin: 0;
   color: var(--text);
 }
-
-/* ─────────────────────────────────────────────────────────────
-   FIND A TUTOR LAYOUT
-   ───────────────────────────────────────────────────────────── */
-
-/* Filter sidebar fixed, course grid scrollable.
-   height calc subtracts the header + title bar.
-   This is scoped only to .page-layout so it doesn't
-   affect any other page's scrolling. */
 
 .page-layout {
   display: flex;
@@ -61,9 +51,8 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
-   COURSE CARD
+   COURSE CARDS
    ───────────────────────────────────────────────────────────── */
-
 .course-card {
   background: #EBF4FA;
   border: 1px solid #B0C4D4;
@@ -154,15 +143,13 @@
 .course-price strong {
   font-size: 1rem;
   font-weight: 700;
-  /* color: #0F172A;*/
-  color: var(--gold);
+  color: var(--gold, #B09E5A);
   display: block;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   CUSTOM MODAL
+   MODAL SHELL & STRUCTURE
    ───────────────────────────────────────────────────────────── */
-
 .custom-modal-overlay {
   position: fixed;
   top: 0;
@@ -178,25 +165,20 @@
 
 .custom-modal-content {
   background-color: white;
-  padding: 30px;
+  padding: 40px; 
   border-radius: 12px;
-  width: 90%;
-  max-width: 1000px;
-  max-height: 80vh;
-  overflow-y: auto;
+  width: 95%;
+  max-width: 1300px;
+  height: 90vh;
+  max-height: 900px;
   position: relative;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15); 
 }
 
-.custom-modal-section {
-  margin-top: 20px;
-}
-
-.custom-modal-section h3 {
-  border-bottom: 2px solid #f1f1f1;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  font-size: 1.2rem;
+.split-modal {
+  display: flex;
+  gap: 50px;
+  height: 85vh; 
 }
 
 .close-button {
@@ -205,39 +187,42 @@
   right: 15px;
   background: none;
   border: none;
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1.5rem;
   cursor: pointer;
-  color: #555;
+  color: #94A3B8;
+  transition: color 0.2s;
+  z-index: 50; 
+  padding: 10px;
 }
 
-.book-button {
-  margin-top: 25px;
-  width: 100%;
-  padding: 12px;
-  background-color: #0056b3;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-.book-button:hover {
-  background-color: #004494;
+.close-button:hover {
+  color: #333;
 }
 
 /* ─────────────────────────────────────────────────────────────
-   MODAL ENHANCEMENTS
+   MODAL: LEFT COLUMN (Details & Reviews)
    ───────────────────────────────────────────────────────────── */
+.modal-left {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #E2E8F0;
+  padding-right: 40px;
+}
 
 .modal-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; 
-  margin-bottom: 25px;
+  align-items: flex-start;
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
   padding-right: 30px; 
+}
+
+.modal-header h2, .modal-header .text-muted {
+  text-align: left;
+  width: 100%;
 }
 
 .modal-header h2 {
@@ -246,10 +231,8 @@
   font-weight: bold;
 }
 
-.modal-header .text-muted {
-  margin: 0;
-  font-size: 1rem;
-  color: #64748B;
+.custom-modal-section {
+  margin-top: 20px;
 }
 
 .custom-modal-section h3 {
@@ -257,6 +240,21 @@
   font-size: 1.25rem;
   margin-bottom: 15px;
   color: #333;
+}
+
+.about-section {
+  margin-bottom: 15px;
+}
+
+.about-section p {
+  margin-bottom: 10px;
+}
+
+.reviews-section {
+  flex: 1;
+  overflow-y: auto; 
+  padding-right: 15px; 
+  margin-top: 20px;
 }
 
 .modal-card-grid {
@@ -275,13 +273,6 @@
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
-/*
-.modal-info-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-*/
-
 .modal-info-card .card-icon {
   font-size: 1.5rem;
   display: block;
@@ -299,12 +290,6 @@
   margin: 0;
   color: #64748B;
   font-size: 0.9rem;
-}
-
-.modal-info-card .cost {
-  margin-top: 8px;
-  font-weight: bold;
-  color: #0056b3; 
 }
 
 .review-card {
@@ -333,26 +318,344 @@
   font-style: italic;
 }
 
-.close-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #94A3B8;
-  transition: color 0.2s;
+/* ─────────────────────────────────────────────────────────────
+   MODAL: RIGHT COLUMN (Booking & Tabs)
+   ───────────────────────────────────────────────────────────── */
+.modal-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%; 
+  overflow: hidden; 
 }
 
-.close-button:hover {
-  color: #333;
+.booking-toggle {
+  display: flex;
+  background-color: #F1F5F9;
+  border-radius: 8px;
+  padding: 4px;
+  margin-bottom: 25px;
+  margin-right: 40px; 
+}
+
+.toggle-btn {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background: transparent;
+  color: #64748B;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.toggle-btn.active {
+  background-color: #FFFFFF;
+  color: #0056b3;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Shared Booking Button */
+.book-button {
+  margin-top: auto; 
+  flex-shrink: 0; 
+  width: 100%;
+  padding: 14px;
+  background-color: #0056b3;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.book-button:hover:not(:disabled) {
+  background-color: #004494;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SESSION CALENDAR WIDGET
+   ───────────────────────────────────────────────────────────── */
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow-y: auto; 
+  padding-right: 10px;
+  margin-bottom: 15px;
+}
+
+.custom-calendar {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: #64748B;
+  padding: 5px 10px;
+  border-radius: 4px;
+}
+
+.calendar-header button:hover {
+  background: #F1F5F9;
+  color: #1E293B;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+.day-name {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #94A3B8;
+  margin-bottom: 10px;
+}
+
+.calendar-day {
+  padding: 8px 0;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #CBD5E1; 
+  transition: all 0.2s;
+}
+
+.calendar-day.empty {
+  pointer-events: none;
+}
+
+.calendar-day.has-session {
+  background: #EBF4FA;
+  color: #0056b3;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.calendar-day.has-session:hover {
+  background: #D3E4F4;
+}
+
+.calendar-day.selected {
+  background: #0056b3;
+  color: white;
+}
+
+.available-times-section h4 {
+  margin: 0 0 10px 0;
+  font-size: 1rem;
+  color: #1E293B;
+}
+
+.available-times {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.time-slot {
+  background: white;
+  border: 1px solid #0056b3;
+  color: #0056b3;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.time-slot:hover {
+  background: #0056b3;
+  color: white;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   HOURLY AVAILABILITY GRID WIDGET
+   ───────────────────────────────────────────────────────────── */
+.hourly-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1; 
+  min-height: 0;
+}
+
+.hourly-container h3 {
+  margin-bottom: 5px;
+}
+
+.hourly-container .mb-4 {
+  margin-bottom: 20px;
+}
+
+.hourly-grid-wrapper {
+  background: white;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 20px;
+  user-select: none; 
+  -webkit-user-select: none;
+}
+
+.calendar-grid-header {
+  display: flex;
+  background-color: #F8FAFC;
+  border-bottom: 1px solid #E2E8F0;
+  padding: 10px 0;
+}
+
+.time-label-spacer {
+  width: 60px; 
+  flex-shrink: 0;
+}
+
+.day-header {
+  flex: 1;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+}
+
+.hourly-grid-body {
+  flex: 1;
+  height: auto; 
+  overflow-y: auto;
+}
+
+.hour-row {
+  display: flex;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+.time-label {
+  width: 60px;
+  flex-shrink: 0;
+  text-align: right;
+  padding-right: 10px;
+  font-size: 0.75rem;
+  color: #94A3B8;
+  border-right: 1px solid #E2E8F0;
+  padding-top: 2px; 
+}
+
+.days-container {
+  display: flex;
+  flex: 1;
+}
+
+.day-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #E2E8F0;
+}
+
+.day-column:last-child {
+  border-right: none;
+}
+
+.sub-slot {
+  height: 12px; 
+  width: 100%;
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.sub-slot:nth-child(2) {
+  border-bottom: 1px dotted #F1F5F9;
+}
+
+.sub-slot:hover {
+  background: #F1F5F9;
+}
+
+.sub-slot.selected {
+  background-color: #9E8C50; 
+}
+
+.sub-slot.selected:hover {
+  background-color: #8A7A45;
+}
+
+.unavailable-col {
+  background-color: #F8FAFC; 
+}
+
+.sub-slot.unavailable {
+  cursor: not-allowed; 
+  border-bottom: 1px solid #E2E8F0; 
+}
+
+.sub-slot.unavailable:hover {
+  background: transparent; 
+}
+
+.hourly-summary-action {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #F8FAFC;
+  border-top: 1px solid #E2E8F0;
+}
+
+.summary-text {
+  display: flex;
+  flex-direction: column;
+  color: #0056b3;
+  font-size: 1rem;
+}
+
+.request-btn {
+  width: auto;
+  padding: 10px 24px;
+  margin-top: 0;
+}
+
+.request-btn:disabled {
+  background-color: #CBD5E1;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
 /* ─────────────────────────────────────────────────────────────
    RESPONSIVE
    ───────────────────────────────────────────────────────────── */
-
 @media (max-width: 768px) {
   .page-layout {
     flex-direction: column;
@@ -368,5 +671,18 @@
 
   .courses-container {
     overflow-y: unset;
+  }
+
+  .split-modal {
+    flex-direction: column;
+    height: auto;
+    gap: 20px;
+  }
+
+  .modal-left {
+    border-right: none;
+    border-bottom: 1px solid #E2E8F0;
+    padding-right: 0;
+    padding-bottom: 20px;
   }
 }

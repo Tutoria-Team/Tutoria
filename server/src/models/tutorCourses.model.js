@@ -48,9 +48,9 @@ const seedTutorCourses = async () => {
     ON CONFLICT (tutor_email, course_name) DO NOTHING;
   `);
 
-  // 3. Add dummy sessions for Alice's courses into the EXISTING sessions table
-  // We set user_email to NULL so your controller recognizes them as available!
+  // 3. Add dummy sessions into the EXISTING sessions table
   await pool.query(`
+    -- Web Dev Sessions
     INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
     SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '1 day' + INTERVAL '2 hours', 45.00, NULL
     FROM tutor_courses WHERE course_name = 'Introduction to Web Development';
@@ -59,9 +59,19 @@ const seedTutorCourses = async () => {
     SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '3 days', 45.00, NULL
     FROM tutor_courses WHERE course_name = 'Introduction to Web Development';
     
+    -- Essay Review Session
     INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
     SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '5 days', 150.00, NULL
     FROM tutor_courses WHERE course_name = 'College Essay Review';
+
+    -- NEW: SAT Bootcamp Sessions (Testing the "Both" toggle scenario)
+    INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
+    SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '2 days' + INTERVAL '4 hours', 450.00, NULL
+    FROM tutor_courses WHERE course_name = 'Intensive SAT Prep Bootcamp';
+
+    INSERT INTO sessions (tcid, tutor_email, session_timestamp, cost, user_email)
+    SELECT tcid, 'tutor.alice@example.com', CURRENT_TIMESTAMP + INTERVAL '6 days', 450.00, NULL
+    FROM tutor_courses WHERE course_name = 'Intensive SAT Prep Bootcamp';
   `);
   
   console.log('✔ dummy tutor, courses, and sessions seeded');

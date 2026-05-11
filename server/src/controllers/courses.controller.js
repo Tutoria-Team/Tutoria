@@ -110,6 +110,7 @@ const getAllTutorCourses = async (req, res, next) => {
         tc.tcid, 
         tc.course_name, 
         (SELECT ROUND(AVG(user_rating), 1) FROM reviews r WHERE r.tcid = tc.tcid) AS overall_rating,
+        tc.rate_type,
         tc.hourly_rate,
         tc.session_rate,
         u.first_name, 
